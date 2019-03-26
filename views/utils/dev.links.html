@@ -1,0 +1,8 @@
+		{if $env == "dev" || $smarty.get.proddebug == '1'}
+		<div id="dev-info">
+			{$env} | {if isset($version)}{$version} |{/if} {if isset($templateFile)}{$templateFile} |{/if} {if isset($smartyIncludeFile)}{$smartyIncludeFile} | {/if} <a href="{$appPath}/utils/session" data-ajax="false">session</a> | <a href="{$appPath}/utils/hive" data-ajax="false">hive</a> | <a href="{$appPath}/logout" data-ajax="false">logout</a>
+		</div>
+		{if $env == 'dev' || $smarty.get.proddebug == '1'}
+		{debug}
+		{/if}
+        {/if}

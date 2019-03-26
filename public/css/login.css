@@ -1,0 +1,10 @@
+/*-------------------------------------
+ * General
+ *-------------------------------------*/
+ .login-page, .register-page {
+	background: #fff none repeat scroll 0 0;
+}
+.login-box-body, .register-box-body {
+  background: #f6f6f7 none repeat scroll 0 0;
+  box-shadow: 0 0 10px #999;
+}

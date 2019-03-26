@@ -1,0 +1,45 @@
+[globals]
+
+env = dev
+port = 81
+secure = 0
+
+dbHost = localhost
+dbPort = 3306
+dbName = dbName
+dbUsername = dev
+dbPassword = dev
+
+; the following should be 0 and true for production.  In the local.ini
+; these can be 1 and false for development
+smartyDebug=0
+smartyCache = false
+
+; Number of seconds that sql query results should be cached
+; before query is re-run. For dev, we'd like to keep this short.
+; But we should test with it longer from time to time in order
+; to identify situations where we have to force a refresh.
+dbCacheTTL = 1
+
+; Use this setting to turn off detailed f3 sql logging.
+; Note that this setting does NOT change whether or not our application 
+; code writes out a log entry containing the sql log string, it  
+; only controls whether f3 assembles the string or not.
+f3DoLogSql = true
+
+; 5 = DEBUG, 4 = INFO, 3 = WARNING, 2 = WARNING, 1 = ERROR, 0 = NONE
+wyolutionLoggerLevel=5
+
+; 1 = log to browser as hidden comments
+; 2 = log to a file
+; 3 = log to browser and file
+wyolutionLoggerType=3
+
+; 0 -- don't suppress, show the details at the bottom of each page
+; 1 -- suppress; use this option for production
+SUPPRESS_EXECUTION_DETAILS=0
+
+; 0 -- do not show any dev-only options
+; 1 -- show dev-only (not ready for client review) options
+SHOW_DEV_OPTIONS=1
+

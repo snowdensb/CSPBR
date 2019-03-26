@@ -1,0 +1,171 @@
+{function name=caseTypeCell}
+	{$cnt = 0}
+	{foreach $caseTypes.{$caseTypeKey}.courts as $courtId}
+		{foreach $courts as $court}
+			{if $court.CourtID == $courtId && $court.CourtLevelID == $courtLevel}
+				{$cnt = $cnt + 1}
+			{/if}
+		{/foreach}
+	{/foreach}
+	<td class='courtCount intensity{$cnt}' courtLevel="{$courtLevel}" caseType="{$caseTypeKey}">
+		{if $cnt > 0}
+			<a handler="caseClick" href="#" caseType="{$caseTypeKey}" courtLevel="{$courtLevel}">{$cnt}</a>
+		{/if}
+	</td>
+{/function}
+
+{function name=renderCourts}
+	<td colspan=99>
+		{foreach $caseTypes.{$caseTypeKey}.courts as $courtId}
+			{foreach $courts as $court}
+				{if $court.CourtID == $courtId && $court.CourtLevelID == $courtLevel}
+	                 <div id="court{$court.CourtID}" class="court box box-{viewHelper->getCourtLevelColor param=$courtLevel}" courtId="{$court.CourtID}">
+	                     <div class="box-header with-border">
+	                         <h3 class="box-title">{$court.CourtName}</h3>
+	                         {*
+	                         <div class="box-tools pull-right">
+	                             <button class="btn btn-box-tool"
+	                                 data-widget="collapse">
+	                                 <i class="fa fa-plus"></i>
+	                             </button>
+	                         </div>
+	                         *}
+	                         <!-- /.box-tools -->
+	                     </div>
+	                     <!-- /.box-header -->
+	                     <div class="box-body">
+	                         {if $court.Notes != '-99'}
+		                         <p>{$court.Notes}</p>
+		                     {else}
+		                     	<p>&nbsp;</p>
+	                         {/if}
+	                         <div id="appealPath-{$courtLevel}-{$caseTypeKey}-{$court.CourtID}" class='appeal-path'></div>
+	                     </div>
+	                     <!-- /.box-body -->
+	                     <div class="box-footer">
+	                     </div>
+	                 </div>
+				{/if}
+			{/foreach}
+		{/foreach}
+	</td>
+{/function}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <h1>Court Chart</h1>
+        <p># Courts by Case Type and Jurisdiction for {$currentState}</p>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+    
+        <div class="box">
+            <div class="box-body">
+                <form action="{$appPath}/" method="GET" id="chartForm">
+                    <div class="form-group">
+                        <label for="state">State: </label>
+                        <select id="state" name="state" class="form-control" onchange="window.location='{$appPath}/chart2?state=' + this.value;">
+                            {foreach $states as $state}
+                            	<option value="{$state}" {if $state === $currentState}selected{/if}>{$state}</option>
+                            {/foreach}
+                        </select>
+                     </div>
+                </form>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+				<div class="row">
+					<div class="col-md-12">
+						{* BLASPHEMY: use a table for now *}
+						<table class='caseTable'>
+							<thead>
+								<th>Case Type</th>
+			                    {foreach $courtLevelsAll as $courtLevel => $courtLevelDesc}
+				                    {if isset($courtLevels[$courtLevel])}
+				                    	<th>{$courtLevelDesc|replace:" ":"<br/>"}</th>
+				                    {/if}
+				                {/foreach}							
+				            </thead>
+				            <tbody>
+				            	{foreach $caseTypes as $caseTypeKey => $caseType}
+				            		<tr>
+				            			<td style='text-align:right;'>{$caseType.label}</td>
+				            			{foreach $courtLevelsAll as $courtLevel => $courtLevelDesc}
+				            				{if isset($courtLevels[$courtLevel])}
+						            			{call name="caseTypeCell" courtLevel=$courtLevel}
+						            		{/if}
+						            	{/foreach}
+				            		</tr>
+			            			{foreach $courtLevelsAll as $courtLevel => $courtLevelDesc}
+			            				{if isset($courtLevels[$courtLevel])}
+						            		<tr class='courts' courtLevel="{$courtLevel}" caseType="{$caseTypeKey}">
+						            			{call name="renderCourts" courtLevel=$courtLevel}
+						            		</tr>
+					            		{/if}
+					            	{/foreach}
+				            	{/foreach}
+				            </tbody>
+						</table>
+					</div>
+				</div>
+
+    </section>
+    <!-- /.content -->
+
+
+
+</div>
+<!-- /.content-wrapper -->
+
+<script>
+var caseTypes = {$caseTypesJson};
+var courts = {$courtsJson};
+var myDiagram;
+{literal}
+	$(document).ready(function() {
+		$("a[handler='caseClick']").click(function(e) {
+			e.preventDefault();
+			if ($(this).parent().hasClass("selected")) {
+				$("tr.courts").hide();
+				$(this).removeClass("selected");
+			} else {
+				var courtLevel = $(this).attr("courtLevel");
+				var caseType = $(this).attr("caseType");
+				console.debug(courtLevel, caseType);
+				$("tr.courts").hide();
+				$("tr.courts[courtLevel='"+courtLevel+"'][caseType='"+caseType+"']").show();
+				$("td.courtCount").removeClass("selected");
+				$("td.courtCount[courtLevel='"+courtLevel+"'][caseType='"+caseType+"']").addClass("selected");
+				
+				renderAppealPaths(courtLevel, caseType);
+			}
+		});
+	});
+	
+	function renderAppealPaths(courtLevel, caseType) {
+		$("tr.courts .court .appeal-path").html("");
+		$("tr.courts[courtLevel='"+courtLevel+"'][caseType='"+caseType+"'] .court").each(function() {
+			var courtId = $(this).attr("courtId");
+			data = [];
+			for (var i=0; i<courts.length; i++) {
+				if (courts[i].CourtID == courtId) {
+					var court = courts[i];
+					data.push({"id":courtId, "text":court.CourtName});
+					for (j=0; j<court.Parents.length; j++) {
+						var parent = court.Parents[j];
+						data.push({"id":parent.CourtID, "text":parent.CourtName, "parent":courtId})
+					}
+				}
+			}
+		    myDiagram = new dhx.Diagram("appealPath-"+courtLevel+"-"+caseType+"-"+courtId, {type:"org",scale:0.8});
+		    myDiagram.data.parse(data);
+		    myDiagram.paint();
+		});
+	}
+{/literal}
+
+</script>

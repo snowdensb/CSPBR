@@ -1,0 +1,664 @@
+<section class="content-header">
+    <h1>Court Structures By State</h1>
+</section>
+<!-- Main content -->
+<section class="content">
+
+    <div class="row">
+        <div class="col-sm-3 col-md-5">
+
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs pull-right">
+                    <li class=""><a href="#tabState1" data-toggle="tab" aria-expanded="false" id="tabState1Btn">By Category</a></li>
+                    <li class="active"><a href="#tabState2" data-toggle="tab" aria-expanded="true" id="tabState2Btn">Using Filters</a></li>
+                    <li class="pull-left header"><i class="fa fa-map"></i> View States</li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="tabState1">
+                        <div id="selectedCategories">
+                        </div>
+                        <div id="tabState1Info">
+                            <b>Usage:</b>
+                            <p>
+                                Select a category from the left to display as a pattern across the map to the right.  Such a map is called a <a href="https://en.wikipedia.org/wiki/Choropleth_map" target="_blank">choropleth map</a> and
+                                is used to show variation in datas across groups (in this case states).
+                            </p>
+                        </div>
+                    </div><!-- /.tab-pane -->
+                    <div class="tab-pane active" id="tabState2">
+                        <div id="selectedFilters">
+                        </div>
+                        <div id="tabState2Info">
+                            <b>Usage:</b>
+                            <p>
+                                Use the options to the left to determine exactly which states you want to select.
+                            </p>
+                            <p>
+                                For example, you could specify that you only want to see states with a <span class="label label-info"><i class="fa fa-balance-scale"></i> Case Load over 6 Million</span>.
+                            </p>
+                            <p>
+                                You could further refine the states by also specifying that you only want to see states that <b>also</b> are <span class="label label-info"><i class="fa fa-usd"></i> Funded Locally</span>.
+                            </p>
+                            <p>In this example, Texas and New Jersey will be shown.</p>
+                            <p><b>Give it a try and see what you find!</b></p>
+                        </div>
+                    </div><!-- /.tab-pane -->
+                </div><!-- /.tab-content -->
+            </div>
+        </div>
+        <div class="col-sm-9 col-md-7">
+            <div class="box box-solid bg-light-blue-gradient">
+                <div class="box-header">
+                    <i class="fa fa-map-marker"></i>
+                    <h3 class="box-title">
+                        Select States
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div id="world-map" style="width: 100%px; height: 400px;"></div>
+                    <div id="world-map-overlay"></div>
+                </div><!-- /.box-body-->
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-success" id="courtsWrapper">
+        <div class="box-header hidden">
+            <h3 class="box-title">Court Cards</h3>
+            <div class="box-tools pull-right">
+                <span class="hidden-xs hidden-sm">
+                    <strong>Case Type</strong> <select id="caseTypeCourt" class="form-control" style="display: inline-block; width: inherit; margin-right: 30px;" onchange="updateCaseTypeCourt();">
+                        <option value="0">All</option>
+                        {foreach $caseTypeCourtsFilter as $id => $desc}
+                        <option value="{$id}">{$desc}</option>
+                        {/foreach}
+                    </select>
+                </span>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-right:2em;">
+                    <label class="btn btn-primary btn-sm active" title="Color charts using standard court levels" alt="Color charts using standard court levels">
+                        <input type="radio" name="cspagg" id="cspaggoff" autocomplete="off" checked> Court Level
+                    </label>
+                    <label class="btn btn-primary btn-sm" title="Color charts using CSP aggregation (does not apply to all states)" alt="Color charts using CSP aggregation (does not apply to all states)">
+                        <input type="radio" name="cspagg" id="cspaggon" autocomplete="off"> CSP Agg
+                    </label>
+                </div>
+                <div class="btn-group" data-toggle="btn-toggle">
+                    <button class="pull-right btn btn-default btn-sm" id="flipGraphs">Rotate Graphs <i class="fa fa-repeat"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="box-body bg-gray color-palette">
+
+            <div class="row">
+                {for $index=0 to 5}
+                <div id="courtCol{$index}" class="courtCol hidden">
+                    <div class="courtWrapper" style="background-color: #fff;">
+                        <div class="stateFlag">
+                            <img class="stateFlagImg img-responsive" src="" />
+                        </div>
+                        <div class="courtContent" style="margin: 5px; position:relative;">
+                            <button class="btn btn-default btn-sm chartZoomBtn" data-id="{$index}" style="position: absolute; top: -20px;"><li class="fa fa-search"></li></button>
+                            <div class="courtGraph text-center" style="color: #fff;">
+                            </div>
+                            <div style="padding: 10px 0px;">
+                                <div class="row">
+                                    <div class="stateDetail col-md-12 col-xl-6"></div>
+                                    <div class="courtDetail col-md-12 col-xl-6">
+                                    </div>
+                                </div>
+                                <p><span class="label label-success">Click court in chart for details!</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/for}
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="infoModalTitle"></h4>
+            </div>
+            <div class="modal-body" id="infoModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    { literal }
+    var selectedStates = [];
+    var mapObject;
+    var stateDetails;
+    var graphDirection = ['LR', 'TB', 'BT'];
+    var graphDirectionIndex = 0;
+    var choroplethData;
+    var levelOrCSP = "level";
+    var colors = { "COLR": "#f39c12", "IAC": "#00a65a", "GJ": "#00c0ef", "LJ": "#3c8dbc" };
+    var useChoropleth = false;
+    var choroplethDataCategory = '';
+    var caseTypeCourt;
+    var caseTypeId = 0;
+
+    $('.stateFilter').click(function () {
+        selections = '';
+        $('input.stateFilter:checked').each(function () {
+            if ($(this).val() != '') {
+                var label = $(this).parent().parent().data('label');
+                var icon = $(this).parent().parent().data('icon');
+                var item = $(this).parent().text();
+                var id = $(this).attr('id');
+                selections += '<button class="btn btn-block btn-primary btn-sm" onclick="$(\'#' + id + '\').prop(\'checked\',false); $(\'#dummy\').click();"><i class="fa fa-' + icon + '"></i> ' + label + ' / ' + item + '</button>';
+            }
+        })
+        var formData = $('#stateFilterForm').serialize();
+        console.log(formData);
+        if (formData == '') {
+            $('#selectedFilters').html('');
+            $('#tabState2Info').show();
+            clearMap();
+            return;
+        } else {
+            $('#selectedFilters').html('<h3>Selected Filters</h3>' + selections);
+            $('#tabState2Info').hide();
+        }
+        $.post(appConfig.appPath + '/stateFilter', formData, function (data) {
+            // update map
+            var states = {};
+            for (var i = 0; i < data.length; i++) {
+                states['US-' + data[i].state] = 7;
+            }
+            clearMap();
+            m = mapObject.series.regions[0];
+            mapObject.series.regions[0].params.min = 1;
+            mapObject.series.regions[0].params.max = 10;
+            mapObject.series.regions[0].setValues(states);
+        }, 'json');
+    });
+
+    $('.stateFilterCategory').click(function () {
+        selections = '';
+        category = '';
+        $('input.stateFilterCategory:checked').each(function () {
+            if ($(this).val() != '') {
+                category = $(this).val();
+                var label = $(this).parent().parent().data('label');
+                var icon = $(this).parent().parent().data('icon');
+                selections += '<i class="fa fa-' + icon + '"></i> ' + label;
+            }
+        })
+        console.log(category);
+        if (category == '') {
+            $('#selectedCategories').html('');
+            $('#tabState1Info').show();
+            clearMap();
+            return;
+        } else {
+            $('#selectedCategories').html('<h3>Selected Category</h3>' + selections);
+            $('#tabState1Info').hide();
+        }
+        // computer data
+        var states = {};
+        for (i = 0; i < choroplethData.data.length; i++) {
+            stateItem = choroplethData.data[i];
+            states['US-' + stateItem.abv] = stateItem[category + 'ID'];
+        }
+
+        console.log(states);
+        console.log(choroplethData.info[category]);
+
+        clearMap();
+        m = mapObject.series.regions[0];
+        mapObject.series.regions[0].params.min = 1;
+        mapObject.series.regions[0].params.max = choroplethData.info[category];
+        mapObject.series.regions[0].setValues(states);
+
+        choroplethDataCategory = category;
+
+    });
+
+    $('#flipGraphs').click(function () {
+        graphDirectionIndex++;
+        if (graphDirectionIndex > (graphDirection.length - 1)) {
+            graphDirectionIndex = 0;
+        }
+        updateColumnDetail();
+    });
+
+    $('.chartZoomBtn').click(function () {
+        var chartId = '#courtCol' + $(this).data('id');
+        var stateName = $(chartId).data('statename');
+        stateName = $('#' + stateName.toLowerCase() + 'CourtCardName').text();
+        var stateImg = $(chartId + ' .stateFlagImg').attr('src');
+        var chart = $(chartId + ' .courtGraph').html();
+        $('#infoModalTitle').html('<img class="img-responsive pull-left" style="margin-right: 20px; max-height: 35px;" src="' + stateImg + '"/><h3>' + stateName + ' Court Chart</h3>');
+        $('#infoModalBody').html('<div class="row">' + chart + '</div><div class="row"><div class="col">' + getColorKey() + '</div></div>');
+        $('#infoModal').modal("show");
+        return false;
+    });
+
+    $('#tabState1Btn').click(function () {
+        $('input.stateFilter:checked').prop('checked', false);
+        $('li.treeviewStateFilters').addClass('hidden');
+        $('li.treeviewStateCategory').removeClass('hidden');
+        $('#selectedFilters').html('');
+        $('#tabState1Info').show();
+        useChoropleth = true;
+        console.log('Done tab 1');
+        clearMap();
+    });
+    $('#tabState2Btn').click(function () {
+        $('input.stateFilterCategory:checked').prop('checked', false);
+        $('li.treeviewStateCategory').addClass('hidden');
+        $('li.treeviewStateFilters').removeClass('hidden');
+        $('#selectedCategories').html('');
+        $('#tabState2Info').show();
+        useChoropleth = false;
+        console.log('Done tab 2');
+        clearMap();
+    });
+
+    $('#cspaggoff').change(function () {
+        levelOrCSP = "level";
+        applyCourtColors();
+    });
+
+    $('#cspaggon').change(function () {
+        levelOrCSP = "csp";
+        applyCourtColors();
+    });
+
+    $(document).ready(function () {
+        // grab all court structure data
+        $.post(appConfig.appPath + '/stateDetails', 'states=&dir=' + graphDirection[graphDirectionIndex], function (data) {
+            stateDetails = data;
+            $("#world-map-overlay").fadeOut();
+        });
+        $.post(appConfig.appPath + '/courtCaseType', '', function (data) {
+            caseTypeCourt = data;
+        })
+        $.post(appConfig.appPath + '/stateCategory', '', function (data) {
+            choroplethData = data;
+        });
+        //mermaid.initialize({ theme: 'default' })
+        var jvectorData = { "US-WY": 10 };
+        renderMap(jvectorData);
+    });
+
+    function renderMap(series) {
+        $('#world-map').vectorMap({
+            map: 'us_aea',
+            backgroundColor: 'transparent',
+            regionStyle: {
+                initial: {
+                    fill: '#e4e4e4',
+                    "fill-opacity": 1,
+                    stroke: 'none',
+                    "stroke-width": 0,
+                    "stroke-opacity": 1
+                }
+            },
+            regionsSelectable: true,
+            series: {
+                regions: [{
+                    values: series,
+                    scale: ['#4862c3', '#0129bf'],
+                    normalizeFunction: 'linear'
+                }]
+            },
+            onRegionClick: function (e, code) {
+                select(code);
+            },
+            onRegionTipShow: function (e, el, code) {
+                if (useChoropleth) {
+                    for (var ci = 0; ci < choroplethData.data.length; ci++) {
+                        if (('US-' + choroplethData.data[ci].abv) == code) {
+                            el.html(el.html() + ' (' + choroplethData.data[ci][choroplethDataCategory] + ')');
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        mapObject = $("#world-map").vectorMap('get', 'mapObject');
+        clearMap();
+    }
+
+    function clearMap() {
+        mapObject.series.regions[0].clear();
+    }
+
+    function updateSelection(state) {
+        var foundIndex = -1;
+        for (i = 0; i < selectedStates.length; i++) {
+            if (selectedStates[i] == state) {
+                foundIndex = i;
+            }
+        }
+        if (foundIndex > -1) {
+            selectedStates.splice(foundIndex, 1);
+        }
+        else if (selectedStates.length == 6) {
+            removedState = {};
+            removedState[selectedStates.pop()] = false;
+            selectedStates.push(state);
+            mapObject.setSelectedRegions(removedState);
+        }
+        else {
+            selectedStates.push(state);
+        }
+    }
+
+    function updateColumns() {
+        if (selectedStates.length == 6) {
+            $('.courtCol').attr('class', 'courtCol col-xs-12 col-sm-4 col-md-3 col-lg-2');
+        }
+        else if (selectedStates.length == 5) {
+            $('.courtCol').attr('class', 'courtCol col-xs-12 col-sm-4 col-md-3 col-lg-2');
+            $('.courtCol:first').attr('class', 'courtCol col-xs-12 col-sm-4 col-md-3 col-lg-2 col-lg-offset-1');
+            $('#courtCol5').attr('class', 'courtCol hidden');
+        }
+        else if (selectedStates.length == 4) {
+            $('.courtCol').attr('class', 'courtCol hidden');
+            $('.courtCol').attr('class', 'courtCol col-xs-12 col-sm-6 col-md-3');
+            $('#courtCol4').attr('class', 'courtCol hidden');
+            $('#courtCol5').attr('class', 'courtCol hidden');
+        }
+        else if (selectedStates.length == 3) {
+            $('.courtCol').attr('class', 'courtCol hidden');
+            $('#courtCol0').attr('class', 'courtCol col-xs-12 col-sm-6 col-md-4');
+            $('#courtCol1').attr('class', 'courtCol col-xs-12 col-sm-6 col-md-4');
+            $('#courtCol2').attr('class', 'courtCol col-xs-12 col-sm-6 col-md-4');
+        }
+        else if (selectedStates.length == 2) {
+            $('.courtCol').attr('class', 'courtCol hidden');
+            $('#courtCol0').attr('class', 'courtCol col-xs-12 col-sm-6 col-md-4 col-md-offset-2');
+            $('#courtCol1').attr('class', 'courtCol col-xs-12 col-sm-6 col-md-4');
+        }
+        else if (selectedStates.length == 1) {
+            $('.courtCol').attr('class', 'courtCol hidden');
+            $('#courtCol0').attr('class', 'courtCol col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4');
+        }
+        else {
+            $('.courtCol').attr('class', 'courtCol hidden');
+        }
+
+        if (selectedStates.length > 0) {
+            $('#courtsWrapper .box-header').removeClass('hidden');
+        }
+        else {
+            $('#courtsWrapper .box-header').addClass('hidden');
+        }
+    }
+
+    function updateColumnDetail() {
+        for (var i = 0; i < selectedStates.length; i++) {
+            var state = stateDetails[selectedStates[i].toLowerCase()];
+            var g = state.mermaid.replace(/graph (LR|TD|RL|BT)/, 'graph ' + graphDirection[graphDirectionIndex]);
+            console.log(g);
+            $('#courtCol' + i).data('statename', selectedStates[i]);
+            $('#courtCol' + i + ' img.stateFlagImg').attr('src', appConfig.appPath + '/public/images/states/' + state.state + '.png');
+            $('#courtCol' + i + ' .courtGraph .mermaid').remove();
+            $('#courtCol' + i + ' .courtGraph').append('<div class="mermaid" id="mermaid' + i + '">' + "\n" + g + "\n</div>");
+            $('#courtCol' + i + ' .stateDetail').html(showStateDetail(state.state));
+            $('#courtCol' + i + ' .courtDetail').html('');
+        }
+
+        setTimeout(function () {
+            mermaid.init(undefined, $(".courtGraph .mermaid"));
+            applyCourtColors();
+            $("g .node").click(function () {
+                var clicked = this;
+                var courtId = $(this).attr("id");
+                $.post(appConfig.appPath + "/courtDetails", "courtId=" + courtId, function (data) {
+                    $(".courtDetail", $(clicked).parents(".courtContent")).html(showCourtInfo(data));
+                    // Scoll detail into view
+                    $('html, body').animate({
+                        scrollTop: $(".courtDetail", $(clicked).parents(".courtContent")).offset().top
+                    }, 1500);
+                });
+            });
+        }, 50);
+    }
+
+    function select(state) {
+        updateSelection(state);
+        updateColumns();
+        updateColumnDetail();
+    }
+
+    function updateCaseTypeCourt() {
+        caseTypeId = $('#caseTypeCourt').val();
+        console.log('caseTypeID: ' + caseTypeId);
+        updateColumnDetail();
+    }
+
+
+    function showStateDetail(state) {
+        var key = "us-" + state;
+        var details = stateDetails[key].details;
+        var s = "";
+        s += '<h1><span id="' + key.toLowerCase() + 'CourtCardName">' + details.USStateName + '</span>';
+        s += getColorKey();
+        s += "</h1>";
+        s += "<div class='box'>";
+        s += "<ul class='nav nav-pills nav-stacked'>";
+        s += infoLine("Appellate Criminal Structure", details.AppellateCriminalStructureDescription);
+        s += infoLine("Death Penalty?", details.DeathPenaltyDescription);
+        s += infoLine("Trial Criminal Process", details.TrialCriminalProcessingDescription);
+        s += infoLine("Trial Structure", details.TrialStructureDescription);
+        s += "</ul>";
+        s += "</div>";
+        s += progLine("Case Load Size", details.CaseLoadSizeDescription, details.CaseLoadSizePercent);
+        s += progLine("Population", details.PopulationCategoryDescription, details.PopulationCategoryPercent);
+        s += progLine("Pop. Density", details.PopulationDensityDescription, details.PopulationDensityPercent);
+        s += progLine("Rural", details.RuralDescription, details.RuralPopulationPercent);
+        return s;
+    }
+
+    function getColorKey() {
+        s = "<div class='pull-right'>";
+
+        s += "<div class='color-key' alt='Limited Jurisdiction' title='Limited Jurisdiction' style='background-color: " + colors['LJ'] + "'>LJ</div>";
+        s += "<div class='color-key' alt='General Jurisdiction' title='General Jurisdiction' style='background-color: " + colors['GJ'] + "'>GJ</div>";
+        s += "<div class='color-key' alt='Intermediate Appellate Court' title='Intermediate Appellate Court' style='background-color: " + colors['IAC'] + "'>IAC</div>";
+        s += "<div class='color-key' alt='Court of Last Resource' title='Court of Last Resource' style='background-color: " + colors['COLR'] + "'>COLR</div>";
+
+        s += "</div>";
+        return s;
+    }
+
+    function applyCourtColors() {
+        console.debug('applying court colors with level set to', levelOrCSP);
+        for (var i = 0; i < selectedStates.length; i++) {
+            var state = stateDetails[selectedStates[i].toLowerCase()];
+            var mermaidid = "mermaid" + i;
+            applyCourtColor(mermaidid, state);
+        }
+    }
+
+    function applyCourtColor(mermaidid, state) {
+        $("#" + mermaidid + " .nodes .node").each(function () {
+            var courtId = $(this).attr("id");
+            var court = getCourtFromCourtArray(courtId, state.courts);
+            if (court != null) {
+                // Note: uses levelOrCSP, a global var, to determine which court value to use
+                var level = (levelOrCSP == "level" ? court.CourtLevelID : court.CSPAggID);
+                $("rect, circle", $(this)).css("fill", colors[level]);
+                var courtFound = false;
+                var stateIndex = 'US-' + state.state.toUpperCase();
+                if (caseTypeId > 0 && caseTypeCourt[stateIndex][caseTypeId]) {
+                    for (var i = 0; i < caseTypeCourt[stateIndex][caseTypeId].length; i++) {
+                        if (caseTypeCourt[stateIndex][caseTypeId][i] == courtId) {
+                            courtFound = true;
+                        }
+                    }
+                }
+                if (courtFound) {
+                    $("rect, circle", $(this)).css("stroke", "red");
+                    $("rect, circle", $(this)).css("stroke-width", "6px");
+                }
+                else {
+                    $("rect, circle", $(this)).css("stroke", "gray");
+                }
+                //$("rect, circle", $(this)).css("stroke", "gray");
+            }
+        });
+    }
+
+    function showCourtInfo(court) {
+        var level = (levelOrCSP == "level" ? court.CourtLevelID : court.CSPAggID);
+        var s = "<h1>";
+        s += court.CourtName;
+        if (court.Link != -99 && court.Link != "-99")
+            s += "<a style='font-size:.4em; margin-left:1em;' href='" + court.Link + "' target='_blank'>visit court website</a>";
+        s += "</h1>";
+        s += "<div class='box' style='border-top-color: " + colors[level] + "'>";
+        s += "<ul class='nav nav-pills nav-stacked'>";
+        s += infoLine("Appeal from Admin Agency?", (court.AppealFromAdminAgency == "1" ? "Yes" : "No"));
+        s += infoLine("Case Management", court.CaseManagementDescription);
+        s += infoLine("Court Level", court.CourtLevelDescription);
+        s += infoLine("Funding Model", court.FundingDescription);
+        s += infoLine("Notes", court.Notes);
+        s += "</ul>";
+        s += "</div>";
+        s += "<button href='#' class='btn btn-default btn-sm' onclick='return showCaseTypes(" + court.CourtID + ");' style='background-color:" + colors[level] + "'><i class='fa fa-briefcase' style='padding-right:1em;'></i>show case types</button>";
+        return s;
+    }
+
+    function progLine(label, value, percent) {
+        var s = "<div class='progress-group'>";
+        s += "<span class='progress-text'>" + label + "</span>";
+        s += "<span class='progress-number'>" + value + "</span>";
+        s += "<div class='progress sm'>";
+        s += "<div class='progress-bar progress-bar-aqua' style='width: " + percent + "%'></div>";
+        s += "</div>";
+        s += "</div>";
+        return s;
+    }
+
+    function infoLine(label, value) {
+        if (value == -99 || value == "-99")
+            value = "n/a";
+        var s = "<li>" + label + "<span class='pull-right'>" + value + "</span></li>";
+        return s;
+    }
+
+    function getCourtFromCourtArray(courtId, courts) {
+        for (var i = 0; i < courts.length; i++) {
+            if (courts[i].ChildCourtID == courtId)
+                return courts[i];
+        }
+        return null;
+    }
+
+    function getStateFromCourtId(courtId) {
+        console.log(courtId);
+        console.log(stateDetails);
+
+        for (var i = 0; i < selectedStates.length; i++) {
+            var state = stateDetails[selectedStates[i].toLowerCase()];
+            var courts = state.courts;
+            for (var j = 0; j < courts.length; j++) {
+                if (courts[j].ChildCourtID == courtId)
+                    return state;
+            }
+        }
+
+        return null;
+    }
+
+    function showCaseTypes(courtId) {
+        $.post(appConfig.appPath + "/courtDetails", "courtId=" + courtId, function (court) {
+            var state = getStateFromCourtId(courtId);
+            console.debug(state);
+            var stateImg = appConfig.appPath + '/public/images/states/' + state.state + '.png';
+            $('#infoModalTitle').html('<img class="img-responsive pull-left" style="margin-right: 20px; max-height: 35px;" src="' + stateImg + '"/><h3>' + court["CourtName"] + '</h3>');
+            $('#infoModalBody').html(getCourtCaseTypeInfo(court));
+            $('#infoModal').modal("show");
+        });
+
+        return false;
+    }
+
+    function getCourtCaseTypeInfo(court) {
+        console.debug(court);
+        var s = "<div class='table-responsive'>";
+        s += "<table class='table no-margin'>";
+        s += "<thead>";
+        s += "<th>Case Type</th><th title='Appeal By Right' alt='Appeal By Right'>ABR</th>" +
+            "<th title='Appeal By Permission' alt='Appeal By Permission'>ABP</th>" +
+            "<th title='Original Proceeding' alt='Original Proceeding'>Org</th>" +
+            "<th title='Interlocutory Appeal' alt='Interlocutory Appeal'>ILA</th>" +
+            "<th title='Exclusive' alt='Exclusive'>Exc</th>" +
+            "<th title='Limited' alt='Limited'>Ltd</th>" +
+            "<th title='Amounts' alt='Amounts'>Amts</th>" +
+            "<th>Notes</th>";
+        s += "</thead>";
+        s += "<tbody>";
+        for (var i = 0; i < court.casetypes.length; i++) {
+            var casetype = court.casetypes[i];
+            console.debug(casetype);
+            s += "<tr>";
+            s += cctiCol(casetype.CaseTypeDescription, court);
+            s += cctiCol((casetype.AppealByRight == 0 ? "No" : "Yes"), court);
+            s += cctiCol((casetype.AppealByPermission == 0 ? "No" : "Yes"), court);
+            s += cctiCol((casetype.OriginalProceeding == 0 ? "No" : "Yes"), court);
+            s += cctiCol((casetype.InterlocutoryAppeal == 0 ? "No" : "Yes"), court);
+            s += cctiCol((casetype.Exclusive == 0 ? "No" : "Yes"), court);
+            s += cctiCol((casetype.Limited == 0 ? "No" : "Yes"), court);
+            s += cctiCol(cctiMinMax(casetype), court);
+            s += cctiCol(casetype.Notes, court);
+            s += "</tr>";
+        }
+        s += "</tbody>";
+        s += "</table>";
+        s += "</div>";
+        return s;
+    }
+
+    function cctiCol(value, court) {
+        var level = (levelOrCSP == "level" ? court.CourtLevelID : court.CSPAggID);
+        switch (value) {
+            case "Yes":
+                value = "<i class='fa fa-check' style='color:" + colors[level] + ";'></i>";
+                break;
+            case "No":
+                value = "";
+                break;
+        }
+
+        return "<td>" + value + "</td>";
+    }
+
+
+    function cctiMinMax(casetype) {
+        var min = casetype.MinValue;
+        var max = casetype.MaxValue;
+        if ((min == "-98" && max == "-98") || (min == "-99" && max == "-99"))
+            return "";
+
+        min = parseInt(min);
+        if (min < 0) min = 0;
+        min = min.toLocaleString();
+
+        if ($.isNumeric(max)) {
+            max = parseInt(max);
+            max = max.toLocaleString();
+        }
+
+        return min + " to " + max;
+
+    }
+
+    { /literal}
+
+</script>

@@ -1,0 +1,51 @@
+{if isset($appMessages) }
+	{if count($appMessages.success) > 0}
+		<div class="alert alert-success app-message">
+			<ul>
+				{foreach $appMessages.success as $message}
+					<li>{$message}</li>
+				{/foreach}
+			</ul>
+		</div>
+	{/if}
+	{if count($appMessages.info) > 0}
+		<div class="alert alert-info app-message">
+			<ul>
+				{foreach $appMessages.info as $message}
+					<li>{$message}</li>
+				{/foreach}
+			</ul>
+		</div>
+	{/if}
+	{if count($appMessages.warning) > 0}
+		<div class="alert alert-warning app-message">
+			<ul>
+				{foreach $appMessages.warning as $message}
+					<li>{$message}</li>
+				{/foreach}
+			</ul>
+		</div>
+	{/if}
+	{if count($appMessages.error) > 0}
+		<div class="alert alert-danger app-message">
+			<ul>
+				{foreach $appMessages.error as $message}
+					<li>{$message}</li>
+				{/foreach}
+			</ul>
+		</div>
+	{/if}
+    <script>
+    {literal}
+    setTimeout(function() {$('.app-message').fadeOut('slow');},4000);
+    {/literal}
+    </script>
+{else}
+    <div class="alert" id="status-message-ajax" style="display:none;">
+    </div>
+{/if}
+<div id="error-client" class="alert alert-danger" hidden>
+   <ul>
+   </ul>
+</div>
+

@@ -1,0 +1,4 @@
+// English language file
+// put in languages/eng/global.lng
+APP_NAME=NCSC
+TEST_LABEL=Test Label
