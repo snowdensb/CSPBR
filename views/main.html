@@ -93,9 +93,10 @@
                 {for $index=0 to 5}
                 <div id="courtCol{$index}" class="courtCol hidden">
                     <div class="courtWrapper" style="background-color: #fff;">
-                        <div class="stateFlag">
+                        <!--<div class="stateFlag">
                             <img class="stateFlagImg img-responsive" src="" />
                         </div>
+                        -->
                         <div class="courtContent" style="margin: 5px; position:relative;">
                             <button class="btn btn-default btn-sm chartZoomBtn" data-id="{$index}" style="position: absolute; top: -20px;"><li class="fa fa-search"></li></button>
                             <div class="courtGraph text-center" style="color: #fff;">
@@ -449,6 +450,7 @@
         s += '<h1><span id="' + key.toLowerCase() + 'CourtCardName">' + details.USStateName + '</span>';
         s += getColorKey();
         s += "</h1>";
+       
         s += "<div class='box'>";
         s += "<ul class='nav nav-pills nav-stacked'>";
         s += infoLine("Appellate Criminal Structure", details.AppellateCriminalStructureDescription);
@@ -458,19 +460,19 @@
         s += "</ul>";
         s += "</div>";
         s += progLine("Case Load Size", details.CaseLoadSizeDescription, details.CaseLoadSizePercent);
-        s += progLine("Population", details.PopulationCategoryDescription, details.PopulationCategoryPercent);
-        s += progLine("Pop. Density", details.PopulationDensityDescription, details.PopulationDensityPercent);
-        s += progLine("Rural", details.RuralDescription, details.RuralPopulationPercent);
+        //s += progLine("Population", details.PopulationCategoryDescription, details.PopulationCategoryPercent);
+        //s += progLine("Pop. Density", details.PopulationDensityDescription, details.PopulationDensityPercent);
+        //s += progLine("Rural", details.RuralDescription, details.RuralPopulationPercent);
         return s;
     }
 
     function getColorKey() {
         s = "<div class='pull-right'>";
 
-        s += "<div class='color-key' alt='Limited Jurisdiction' title='Limited Jurisdiction' style='background-color: " + colors['LJ'] + "'>LJ</div>";
-        s += "<div class='color-key' alt='General Jurisdiction' title='General Jurisdiction' style='background-color: " + colors['GJ'] + "'>GJ</div>";
-        s += "<div class='color-key' alt='Intermediate Appellate Court' title='Intermediate Appellate Court' style='background-color: " + colors['IAC'] + "'>IAC</div>";
-        s += "<div class='color-key' alt='Court of Last Resource' title='Court of Last Resource' style='background-color: " + colors['COLR'] + "'>COLR</div>";
+        s += "<div class='color-key' alt='Limited Jurisdiction' title='Limited Jurisdiction' style='padding-left: 3px;padding-right: 3px;font-size: .3em; background-color: " + colors['LJ'] + "'>LJ</div>";
+        s += "<div class='color-key' alt='General Jurisdiction' title='General Jurisdiction' style='padding-left: 3px;padding-right: 3px;font-size: .3em; background-color: " + colors['GJ'] + "'>GJ</div>";
+        s += "<div class='color-key' alt='Intermediate Appellate Court' title='Intermediate Appellate Court' style='padding-left: 3px;padding-right: 3px;font-size: .3em; background-color: " + colors['IAC'] + "'>IAC</div>";
+        s += "<div class='color-key' alt='Court of Last Resource' title='Court of Last Resource' style='padding-left: 3px;padding-right: 3px;font-size: .3em; background-color: " + colors['COLR'] + "'>COLR</div>";
 
         s += "</div>";
         return s;
@@ -523,7 +525,7 @@
         s += "</h1>";
         s += "<div class='box' style='border-top-color: " + colors[level] + "'>";
         s += "<ul class='nav nav-pills nav-stacked'>";
-        s += infoLine("Appeal from Admin Agency?", (court.AppealFromAdminAgency == "1" ? "Yes" : "No"));
+        //s += infoLine("Appeal from Admin Agency?", (court.AppealFromAdminAgency == "1" ? "Yes" : "No"));
         s += infoLine("Case Management", court.CaseManagementDescription);
         s += infoLine("Court Level", court.CourtLevelDescription);
         s += infoLine("Funding Model", court.FundingDescription);

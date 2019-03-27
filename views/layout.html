@@ -1,18 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>##APP_NAME##</title>
-    <link rel="icon" href="{$appPath}/public/images/favicon.ico"/>
+    <link rel="icon" href="{$appPath}/public/images/favicon.ico" />
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="{$appPath}/public/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{$appPath}/public/font-awesome-4.7.0/css/font-awesome.min.css">
-    
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{$appPath}/public/adminlte2/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -21,199 +21,200 @@
     -->
     <link rel="stylesheet" href="{$appPath}/public/adminlte2/dist/css/skins/skin-blue.min.css">
     <!--  DatePicker -->
-    <link href="{$appPath}/public/plugins/datepicker/datepicker3.css?v={$version}" rel="stylesheet"  type="text/css" /> 
+    <link href="{$appPath}/public/plugins/datepicker/datepicker3.css?v={$version}" rel="stylesheet" type="text/css" />
     <!-- Data Tables -->
-    <link href="{$appPath}/public/plugins/datatables2/datatables.min.css?v={$version}" rel="stylesheet"  type="text/css" />
+    <link href="{$appPath}/public/plugins/datatables2/datatables.min.css?v={$version}" rel="stylesheet" type="text/css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
+
     <link rel="stylesheet" href="{$appPath}/public/dhtmlxdiagram/diagram/codebase/diagram.css?v={$version}">
     <link rel="stylesheet" href="{$appPath}/public/plugins/jvectormap/jquery-jvectormap-2.0.3.css?v={$version}">
-    
+
     <link href="//fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="{$appPath}/public/css/style.css">
 
     <!-- jQuery 2.1.4 -->
     <script src="{$appPath}/public/plugins/jQuery/jQuery-2.1.4.min.js"></script>
-    
+
     <!-- javascript needs to know where 'home' is -->
     <script>
       var appConfig = {literal}{{/literal}appPath: '{$appPath}'{literal}}{/literal};
       var iAm = {literal}{{/literal}id: '{$smarty.session.user.userId}'{literal}}{/literal};
     </script>
-    
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-315024-75"></script>
     <script>
-    {literal}
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'UA-315024-75');
-    {/literal}
+        { literal }
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-315024-75');
+        { /literal}
     </script>
-  </head>
-  <!--
-  BODY TAG OPTIONS:
-  =================
-  Apply one or more of the following classes to get the
-  desired effect
-  |---------------------------------------------------------|
-  | SKINS         | skin-blue                               |
-  |               | skin-black                              |
-  |               | skin-purple                             |
-  |               | skin-yellow                             |
-  |               | skin-red                                |
-  |               | skin-green                              |
-  |---------------------------------------------------------|
-  |LAYOUT OPTIONS | fixed                                   |
-  |               | layout-boxed                            |
-  |               | layout-top-nav                          |
-  |               | sidebar-collapse                        |
-  |               | sidebar-mini                            |
-  |---------------------------------------------------------|
-  -->
-  <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
-  
-  <div class="wrapper col-med-12">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 
-      <!-- Main Header -->
-      <header class="main-header">
+    <div class="wrapper col-med-12">
+
+        <!-- Main Header -->
+        <header class="main-header">
 
 
-        <!-- Logo -->
-        <a href="{$appPath}/" class="logo">
-          <!-- logo for regular state and mobile devices -->
-          <div class="logo-mini" style="color: #000">NCSC</div>
-          <div class="logo-tablet" style="color: #000">NCSC</div>
-          <div class="logo-lg" style="color: #000; font-size: 14px;">NCSC</div>
-        </a>
+            <!-- Logo -->
+            <a href="{$appPath}/" class="logo">
+                <!-- logo for regular state and mobile devices -->
+                <div class="logo-mini" style="color: #000">NCSC</div>
+                <div class="logo-tablet" style="color: #000">NCSC</div>
+                <div class="logo-lg" style="color: #000; font-size: 14px;">NCSC</div>
+            </a>
 
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-          <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
-          </a>
-          {if $env != prod}
-          <div class="alert alert-warning pull-left" style="padding: 4px; margin: 10px 0px 0px 20px;">
-            <i class="fa fa-exclamation-triangle"></i> You are accessing the {$env} server.
-          </div>
-          {/if}
-          <!-- Navbar Right Menu -->
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-<li class="dropdown tasks-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-flag-o"></i>
-                  <span class="label label-danger">3</span>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
                 </a>
-                <ul class="dropdown-menu">
-                  <li class="header">Future Items To Address</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu" style="padding: 10px;">
-                        <li>Refine Filter Menu</li>
-                        <li>choropleth map</li>
-                        <li>Size All Flags The Same</li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>            
-            </ul>
-          </div>
+                {if $env != prod}
+                <div class="alert alert-warning pull-left" style="padding: 4px; margin: 10px 0px 0px 20px;">
+                    <i class="fa fa-exclamation-triangle"></i> You are accessing the {$env} server.
+                </div>
+                {/if}
+                <!-- Navbar Right Menu -->
+                <!--
+                          <div class="navbar-custom-menu">
+                            <ul class="nav navbar-nav">
+                <li class="dropdown tasks-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                  <i class="fa fa-flag-o"></i>
+                                  <span class="label label-danger">3</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                  <li class="header">Future Items To Address</li>
+                                  <li>
+                                    <!-- inner menu: contains the actual data
+                                    <ul class="menu" style="padding: 10px;">
+                                        <li>Refine Filter Menu</li>
+                                        <li>choropleth map</li>
+                                        <li>Size All Flags The Same</li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </div>
+                      -->
 
-        </nav>
-      </header>
-      <!-- Left side column. contains the logo and sidebar -->
-      <aside class="main-sidebar">
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
 
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-          <!-- Sidebar Menu -->
-          <form id="stateFilterForm">
-          <ul class="sidebar-menu">
-            <li><a href="{$appPath}/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-            {foreach $stateFilters as $label => $data}
-              <li class="treeview treeviewStateFilters">
-                <a href="#"><i class="fa fa-{viewHelper->getIcon param1=$label}"></i>
-                   <span>{viewHelper->getFilterName param1=$label}</span>
-                </a>
-                <ul class="treeview-menu" data-label="{viewHelper->getFilterName param1=$label}" data-icon="{viewHelper->getIcon param1=$label}">
-                  {foreach $data as $id => $desc}
-                    {if $label == 'casetype'}
-                    <li><input type="checkbox" id="f{$data@index}-{$desc@index}" name="stateFilter[{$label}][]" value="{$id}" class="stateFilter" style="padding: 2px 3px;"> {$desc}</li>
-                    {else}
-                    <li><input type="radio" id="f{$data@index}-{$desc@index}" name="stateFilter[{$label}][]" value="{$id}" class="stateFilter" style="padding: 2px 3px;"> {$desc}</li>
-                    {/if}
-                  {/foreach}
-                </ul>
-              </li>
-            {/foreach}            
-            {foreach $stateFilters as $label => $data}
-              {if $label == 'appellatecriminalstructure' || $label == 'caseloadsize' || $label == 'deathpenalty' || $label == 'populationcategory' || $label == 'populationdensity' || $label == 'rural'}
-              <li class="treeview treeviewStateCategory hidden">
-                <a href="#"><i class="fa fa-{viewHelper->getIcon param1=$label}"></i>
-                   <span>{viewHelper->getFilterName param1=$label}</span>
-                </a>
-                <ul class="treeview-menu" data-label="{viewHelper->getFilterName param1=$label}" data-icon="{viewHelper->getIcon param1=$label}">
-                  <li><input type="radio" id="fc{$data@index}" name="stateFilterCategory[]" value="{$label}" class="stateFilterCategory" style="padding: 2px 3px;"> Show Values
-                  <br />
-                  {foreach $data as $id => $desc}
-                    {$desc}<br />
-                  {/foreach}
-                  </li>
-                </ul>
-              </li>
-              {/if}
-            {/foreach}   
-            <li class="header">Application Info</li>         
-            <li><a href="{$appPath}/docs/release"><i class="fa fa-file-text-o"></i> <span>Release Notes</span></a></li>
-            <li><a href="{$appPath}/docs/help"><i class="fa fa-question-circle"></i> <span>Help</span></a></li>
-          </ul><!-- /.sidebar-menu -->
-            <input type="checkbox" class="stateFilter hidden" id="dummy" value="">
-          </form>
-        </section>
-        <!-- /.sidebar -->
-      </aside>
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar Menu -->
+                <form id="stateFilterForm">
+                    <ul class="sidebar-menu">
+                        <li><a href="{$appPath}/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+                        {foreach $stateFilters as $label => $data}
+                        <li class="treeview treeviewStateFilters">
+                            <a href="#">
+                                <i class="fa fa-{viewHelper->getIcon param1=$label}"></i>
+                                <span>{viewHelper->getFilterName param1=$label}</span>
+                            </a>
+                            <ul class="treeview-menu" data-label="{viewHelper->getFilterName param1=$label}" data-icon="{viewHelper->getIcon param1=$label}">
+                                {foreach $data as $id => $desc}
+                                {if $label == 'casetype'}
+                                <li><input type="checkbox" id="f{$data@index}-{$desc@index}" name="stateFilter[{$label}][]" value="{$id}" class="stateFilter" style="padding: 2px 3px;"> {$desc}</li>
+                                {else}
+                                <li><input type="radio" id="f{$data@index}-{$desc@index}" name="stateFilter[{$label}][]" value="{$id}" class="stateFilter" style="padding: 2px 3px;"> {$desc}</li>
+                                {/if}
+                                {/foreach}
+                            </ul>
+                        </li>
+                        {/foreach}
+                        {foreach $stateFilters as $label => $data}
+                        {if $label == 'deathpenalty' || $label == 'populationcategory' || $label == 'rural' || $label == 'caseloadsize' || $label == 'populationdensity' || $label == 'appellatecriminalstructure' || $label == 'caseloadsize' || $label == 'populationdensity'}
+                        <li class="treeview treeviewStateCategory hidden">
+                            <a href="#">
+                                <i class="fa fa-{viewHelper->getIcon param1=$label}"></i>
+                                <span>{viewHelper->getFilterName param1=$label}</span>
+                            </a>
+                            <ul class="treeview-menu" data-label="{viewHelper->getFilterName param1=$label}" data-icon="{viewHelper->getIcon param1=$label}">
+                                <li>
+                                    <input type="radio" id="fc{$data@index}" name="stateFilterCategory[]" value="{$label}" class="stateFilterCategory" style="padding: 2px 3px;"> Show Values
+                                    <br />
+                                    {foreach $data as $id => $desc}
+                                    {$desc}<br />
+                                    {/foreach}
+                                </li>
+                            </ul>
+                        </li>
+                        {/if}
+                        {/foreach}
+                        <li class="header">Application Info</li>
+                        <li><a href="{$appPath}/docs/release"><i class="fa fa-file-text-o"></i> <span>Release Notes</span></a></li>
+                        <li><a href="{$appPath}/docs/help"><i class="fa fa-question-circle"></i> <span>Help</span></a></li>
+                    </ul><!-- /.sidebar-menu -->
+                    <input type="checkbox" class="stateFilter hidden" id="dummy" value="">
+                </form>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
 
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
-        {*
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-        </section>
-        *}
-        
-        <!-- Main content -->
-        <section class="content">
-            {include file=$smartyIncludeFile}
-            {if $showDevOptions == 1 || $smarty.get.proddebug == '1'}
-              {include file='utils/dev.links.html' templateFile=$smarty.template}
-            {/if}
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            {*
+            <!-- Content Header (Page header) -->
+            <section class="content-header"></section>
+            *}
 
-        </section><!-- /.content -->
-      </div><!-- /.content-wrapper -->
-      
-      <!-- Main Footer -->
-      <footer class="main-footer">
-          <!-- To the right -->
-        <div class="pull-right hidden-xs">
-          Version: {$version}
-        </div>
-        <strong>Copyright &copy; {date('Y')} <a href="#">##APP_NAME##</a>.</strong> All rights reserved.
-      </footer>
+            <!-- Main content -->
+            <section class="content">
+                {include file=$smartyIncludeFile}
+                {if $showDevOptions == 1 || $smarty.get.proddebug == '1'}
+                {include file='utils/dev.links.html' templateFile=$smarty.template}
+                {/if}
+
+            </section><!-- /.content -->
+        </div><!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="pull-right hidden-xs">
+                Version: {$version}
+            </div>
+            <strong>Copyright &copy; {date('Y')} <a href="#">##APP_NAME##</a>.</strong> All rights reserved.
+        </footer>
 
     </div><!-- ./wrapper -->
-
     <!-- REQUIRED JS SCRIPTS -->
-
     <!-- Bootstrap 3.3.5 -->
     <script src="{$appPath}/public/bootstrap/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
@@ -222,17 +223,17 @@
     <script src="{$appPath}/public/plugins/datatables2/datatables.min.js?v={$version}"></script>
     <!-- Date Picker -->
     <script src="{$appPath}/public/plugins/datepicker/bootstrap-datepicker.js?v={$version}"></script>
-    
+
     <script src="{$appPath}/public/dhtmlxdiagram/diagram/codebase/diagram.js?v={$version}"></script>
-    
+
     <script src="{$appPath}/public/mermaid/mermaid.min.js?v={$version}"></script>
     <script src="{$appPath}/public/plugins/jvectormap/jquery-jvectormap-2.0.3.min.js?v={$version}"></script>
     <script src="{$appPath}/public/plugins/jvectormap/jquery-jvectormap-us-aea.js?v={$version}"></script>
-       
+
     <!-- standard-ish utility code -->
     <script src="{$appPath}/public/js/js-wyolution.js?v={$version}"></script>
-         
+
     <!--custom js for this app-->
     <script src="{$appPath}/public/js/custom.js?v={$version}"></script>
-  </body>
+</body>
 </html>
