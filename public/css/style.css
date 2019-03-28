@@ -44,12 +44,22 @@ g .node {
     font-size: .4em;
     padding-left: 8px;
     padding-right: 8px;
-    border: solid 1px white;
+    border: solid 1px white;       
 }
 
 #infoModalBody .color-key {
     font-size: 1.0em;
     margin-right: 10px;
+}
+
+h1 .color-key {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: .3em;
+    margin-right: 10px;
+    font-weight: bold;
 }
 
 #world-map-overlay {
