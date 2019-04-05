@@ -83,7 +83,7 @@ class StateDetails extends NCSCBase {
 		    $ret .= $court['ChildCourtID'] . "(" . $court['CourtName'] . ")";
 		    $ret .= " --> ";
 		    if ($court["ParentCourtLevelID"] == "COLR") {
-				$ret .= $court['ParentCourtID'] . "((" . $court['ParentCourtName'] . "))";
+				$ret .= $court['ParentCourtID'] . "(" . $court['ParentCourtName'] . ")";
 		    }
 		    else {
 		    	$ret .= $court['ParentCourtID'] . "(" . $court['ParentCourtName'] . ")";

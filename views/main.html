@@ -65,7 +65,15 @@
     <div class="box box-success" id="courtsWrapper">
         <div class="box-header hidden">
             <h3 class="box-title">Court Cards</h3>
+
             <div class="box-tools pull-right">
+                <span class="hidden-xs hidden-sm" style="margin-right: 20px;">
+                    <div class='color-key' alt='Limited Jurisdiction' title='Limited Jurisdiction' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #3c8dbc;'>LJ</div>
+                    <div class='color-key' alt='General Jurisdiction' title='General Jurisdiction' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #00c0ef;'>GJ</div>
+                    <div class='color-key' alt='Intermediate Appellate Court' title='Intermediate Appellate Court' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #00a65a;'>IAC</div>
+                    <div class='color-key' alt='Court of Last Resource' title='Court of Last Resource' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #f39c12;'>COLR</div>
+                </span>
+
                 <span class="hidden-xs hidden-sm">
                     <strong>Case Type</strong> <select id="caseTypeCourt" class="form-control" style="display: inline-block; width: inherit; margin-right: 30px;" onchange="updateCaseTypeCourt();">
                         <option value="0">All</option>
@@ -87,36 +95,36 @@
                 </div>
             </div>
         </div>
-        <div class="box-body bg-gray color-palette">
+                <div class="box-body bg-gray color-palette">
 
-            <div class="row">
-                {for $index=0 to 5}
-                <div id="courtCol{$index}" class="courtCol hidden">
-                    <div class="courtWrapper" style="background-color: #fff;">
-                        <!--<div class="stateFlag">
+                    <div class="row">
+                        {for $index=0 to 5}
+                        <div id="courtCol{$index}" class="courtCol hidden">
+                            <div class="courtWrapper" style="background-color: #fff;">
+                                <!--<div class="stateFlag">
                             <img class="stateFlagImg img-responsive" src="" />
                         </div>
                         -->
-                        <div class="courtContent" style="margin: 5px; position:relative;">
-                            <button class="btn btn-default btn-sm chartZoomBtn" data-id="{$index}" style="position: absolute; top: -20px;"><li class="fa fa-search"></li></button>
-                            <div class="courtGraph text-center" style="color: #fff;">
-                            </div>
-                            <div style="padding: 10px 0px;">
-                                <div class="row">
-                                    <div class="stateDetail col-md-12 col-xl-6"></div>
-                                    <div class="courtDetail col-md-12 col-xl-6">
+                                <div class="courtContent" style="margin: 5px; position:relative;">
+                                    <button class="btn btn-default btn-sm chartZoomBtn" data-id="{$index}" style="position: absolute; top: -20px;"><li class="fa fa-search"></li></button>
+                                    <div class="courtGraph text-center" style="color: #fff;">
+                                    </div>
+                                    <div style="padding: 10px 0px;">
+                                        <div class="row">
+                                            <div class="stateDetail col-md-12 col-xl-6"></div>
+                                            <div class="courtDetail col-md-12 col-xl-6">
+                                            </div>
+                                        </div>
+                                        <p><span class="label label-success">Click court in chart for details!</span></p>
                                     </div>
                                 </div>
-                                <p><span class="label label-success">Click court in chart for details!</span></p>
                             </div>
                         </div>
+                        {/for}
                     </div>
-                </div>
-                {/for}
-            </div>
 
-        </div>
-    </div>
+                </div>
+            </div>
 </section>
 <!-- /.content -->
 
@@ -139,7 +147,8 @@
     var selectedStates = [];
     var mapObject;
     var stateDetails;
-    var graphDirection = ['LR', 'TB', 'BT'];
+    //var graphDirection = ['LR', 'TB', 'BT'];
+    var graphDirection = ['BT', 'LR', 'TB'];
     var graphDirectionIndex = 0;
     var choroplethData;
     var levelOrCSP = "level";
@@ -447,8 +456,8 @@
         var key = "us-" + state;
         var details = stateDetails[key].details;
         var s = "";
-        s += "<h1 style='height: 55px;'><span id='" + key.toLowerCase() + "CourtCardName'>" + details.USStateName + "</span>";
-        s += getColorKey();
+        s += "<h1><span id='" + key.toLowerCase() + "CourtCardName'>" + details.USStateName + "</span>";
+        //s += getColorKey();
         s += "</h1>";
        
         s += "<div class='box'>";
@@ -456,7 +465,7 @@
         s += infoLine("Appellate Structure", details.AppellateCriminalStructureDescription);
         s += infoLine("Death Penalty?", details.DeathPenaltyDescription);
         s += infoLine("Trial Criminal Process", details.TrialCriminalProcessingDescription);
-        s += infoLine("Trial Structure", details.TrialStructureDescription);
+        s += infoLine("Trial Court Structure", details.TrialStructureDescription);
         s += "</ul>";
         s += "</div>";
         s += progLine("Case Load Size", details.CaseLoadSizeDescription, details.CaseLoadSizePercent);
@@ -470,10 +479,10 @@
     function getColorKey() {
         s = "<div class='pull-right' style='margin-bottom: 15px;'>";
 
-        s += "<div class='color-key' alt='Limited Jurisdiction' title='Limited Jurisdiction' style='font-size: .3em; padding: 2px; font-weight: bold; width: 50px;background-color: " + colors['LJ'] + "'>LJ</div>";
-        s += "<div class='color-key' alt='General Jurisdiction' title='General Jurisdiction' style='font-size: .3em; padding: 2px; font-weight: bold; width: 50px;background-color: " + colors['GJ'] + "'>GJ</div>";
-        s += "<div class='color-key' alt='Intermediate Appellate Court' title='Intermediate Appellate Court' style='font-size: .3em; padding: 2px; font-weight: bold; width: 50px;background-color: " + colors['IAC'] + "'>IAC</div>";
-        s += "<div class='color-key' alt='Court of Last Resource' title='Court of Last Resource' style='font-size: .3em; padding: 2px; font-weight: bold; width: 50px;background-color: " + colors['COLR'] + "'>COLR</div>";
+        s += "<div class='color-key' alt='Limited Jurisdiction' title='Limited Jurisdiction' style='font-size: .3em; padding: 2px; font-weight: bold; width: 30px;background-color: " + colors['LJ'] + "'>LJ</div>";
+        s += "<div class='color-key' alt='General Jurisdiction' title='General Jurisdiction' style='font-size: .3em; padding: 2px; font-weight: bold; width: 30px;background-color: " + colors['GJ'] + "'>GJ</div>";
+        s += "<div class='color-key' alt='Intermediate Appellate Court' title='Intermediate Appellate Court' style='font-size: .3em; padding: 2px; font-weight: bold; width: 30px;background-color: " + colors['IAC'] + "'>IAC</div>";
+        s += "<div class='color-key' alt='Court of Last Resource' title='Court of Last Resource' style='font-size: .3em; padding: 2px; font-weight: bold; width: 30px;background-color: " + colors['COLR'] + "'>COLR</div>";
 
         s += "</div>";
         return s;
