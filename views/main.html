@@ -68,10 +68,10 @@
 
             <div class="box-tools pull-right">
                 <span class="hidden-xs hidden-sm" style="margin-right: 20px;">
-                    <div class='color-key' alt='Limited Jurisdiction' title='Limited Jurisdiction' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #3c8dbc;'>LJ</div>
-                    <div class='color-key' alt='General Jurisdiction' title='General Jurisdiction' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #00c0ef;'>GJ</div>
-                    <div class='color-key' alt='Intermediate Appellate Court' title='Intermediate Appellate Court' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #00a65a;'>IAC</div>
-                    <div class='color-key' alt='Court of Last Resource' title='Court of Last Resource' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #f39c12;'>COLR</div>
+                    <div class='color-key' alt='Limited Jurisdiction' title='Limited Jurisdiction' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #5F6B61; color: #fff;'>LJ</div>
+                    <div class='color-key' alt='General Jurisdiction' title='General Jurisdiction' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #E07628; color: #fff;'>GJ</div>
+                    <div class='color-key' alt='Intermediate Appellate Court' title='Intermediate Appellate Court' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #BF381A; color: #fff;'>IAC</div>
+                    <div class='color-key' alt='Court of Last Resource' title='Court of Last Resource' style='font-size: .9em; padding: 2px; padding-left: 8px; padding-right: 8px; font-weight: bold; background-color: #0A224E; color: #fff;'>COLR</div>
                 </span>
 
                 <span class="hidden-xs hidden-sm">
@@ -152,7 +152,8 @@
     var graphDirectionIndex = 0;
     var choroplethData;
     var levelOrCSP = "level";
-    var colors = { "COLR": "#f39c12", "IAC": "#00a65a", "GJ": "#00c0ef", "LJ": "#3c8dbc" };
+    //var colors = { "COLR": "#f39c12", "IAC": "#00a65a", "GJ": "#00c0ef", "LJ": "#3c8dbc" };
+    var colors = { "COLR": "#0A224E", "IAC": "#BF381A", "GJ": "#E07628", "LJ": "#5F6B61" };
     var useChoropleth = false;
     var choroplethDataCategory = '';
     var caseTypeCourt;
@@ -469,7 +470,7 @@
         s += "</ul>";
         s += "</div>";
         s += progLine("Case Load Size", details.CaseLoadSizeDescription, details.CaseLoadSizePercent);
-        s += "<h5>Investigate caseloads at NCSC's <strong><a href='http://www.courtstatistics.org/' target='_blank'>Court Statistics Project</a></strong></h5>";
+        s += "<h5>Investigate caseloads at NCSC's <strong><a href='http://popup.ncsc.org/CSP/CSP_Intro.aspx' target='_blank'>Court Statistics Data Viewer</a></strong></h5>";
         //s += progLine("Population", details.PopulationCategoryDescription, details.PopulationCategoryPercent);
         //s += progLine("Pop. Density", details.PopulationDensityDescription, details.PopulationDensityPercent);
         //s += progLine("Rural", details.RuralDescription, details.RuralPopulationPercent);
@@ -505,6 +506,7 @@
                 // Note: uses levelOrCSP, a global var, to determine which court value to use
                 var level = (levelOrCSP == "level" ? court.CourtLevelID : court.CSPAggID);
                 $("rect, circle", $(this)).css("fill", colors[level]);
+                
                 var courtFound = false;
                 var stateIndex = 'US-' + state.state.toUpperCase();
                 if (caseTypeId > 0 && caseTypeCourt[stateIndex][caseTypeId]) {
