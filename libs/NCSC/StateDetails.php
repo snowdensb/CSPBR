@@ -83,7 +83,7 @@ class StateDetails extends NCSCBase {
 		    $ret .= $court['ChildCourtID'] . "(" . $court['CourtName'] . ")";
 		    $ret .= " --> ";
 		    if ($court["ParentCourtLevelID"] == "COLR") {
-				$ret .= $court['ParentCourtID'] . "((" . $court['ParentCourtName'] . "))";
+				$ret .= $court['ParentCourtID'] . "(" . $court['ParentCourtName'] . ")";
 		    }
 		    else {
 		    	$ret .= $court['ParentCourtID'] . "(" . $court['ParentCourtName'] . ")";
@@ -119,7 +119,8 @@ class StateDetails extends NCSCBase {
 			$details["CaseLoadSizePercent"] = ($details["CaseLoadSizeID"] * (1/6) * 100);
 			$details["PopulationCategoryPercent"] = ($details["PopulationCategoryID"] * (1/7) * 100);
 			$details["PopulationDensityPercent"] = ($details["PopulationDensityID"] * (1/7) * 100);
-			$details["RuralPopulationPercent"] = ($details["RuralID"]==-99?0:($details["RuralID"] * (1/4) * 100));
+                        $details["RuralPopulationPercent"] = ($details["RuralID"]==-99?0:(100 - (25 * ($details["RuralID"] -1))));                        
+			// $details["RuralPopulationPercent"] = ($details["RuralID"]==-99?0:($details["RuralID"] * (1/4) * 100));
 			return $details;
 		} else {
 			return [];
