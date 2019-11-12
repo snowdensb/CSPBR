@@ -72,19 +72,20 @@ class Constants {
 	const TRIALSTRUCTURE = 'trialstructure';
 	
 	const TABLE_NAMES = [
-        'usstateneighbor' => ['label' => 'State Neighbor', 'icon' => 'users', 'id' => 'USStateNeighborID', 'desc' => 'USStateName', 'order' => 'USStateName'],
         'casetype' => ['label' => 'Case Type', 'icon' => 'briefcase', 'id' => 'CaseTypeID', 'desc' => 'CaseTypeDescription', 'order' => 'CaseTypeDescription'],
         'appellatecriminalstructure' => ['label' => 'Appellate Structure', 'icon' => 'graduation-cap', 'id' => 'AppellateCriminalStructureID', 'desc' => 'AppellateCriminalStructureDescription', 'order' => 'DisplayOrder'],
-        'caseloadsize' => ['label' => 'Case Load Size', 'icon' => 'balance-scale', 'id' => 'CaseloadSizeID', 'desc' => 'CaseloadSizeDescription', 'order' => 'DisplayOrder'],
         'courtlevel' => ['label' => 'Court Level', 'icon' => 'gavel', 'id' => 'CourtLevelID', 'desc' => 'CourtLevelDescription', 'order' => 'DisplayOrder'],
         'cspagg' => ['label' => 'CSP Agg', 'icon' => 'asterisk', 'id' => 'CSPAggID', 'desc' => 'CSPAggDescription', 'order' => 'DisplayOrder'],
         'deathpenalty' => ['label' => 'Death Penalty', 'icon' => 'bolt', 'id' => 'DeathPenaltyID', 'desc' => 'DeathPenaltyDescription', 'order' => 'DisplayOrder'],
         'funding' => ['label' => 'Funding', 'icon' => 'usd', 'id' => 'FundingID', 'desc' => 'FundingDescription', 'order' => 'DisplayOrder'],
+        'trialstructure' => ['label' => 'Trial Structure', 'icon' => 'arrows', 'id' => 'TrialStructureID', 'desc' => 'TrialStructureDescription', 'order' => 'DisplayOrder'],
+        'usstateneighbor' => ['label' => 'State Neighbor', 'icon' => 'users', 'id' => 'USStateNeighborID', 'desc' => 'USStateName', 'order' => 'USStateName'],
+        'caseloadsize' => ['label' => 'Case Load Size', 'icon' => 'balance-scale', 'id' => 'CaseloadSizeID', 'desc' => 'CaseloadSizeDescription', 'order' => 'DisplayOrder'],
         'populationcategory' => ['label' => 'Population Category', 'icon' => 'street-view', 'id' => 'PopulationCategoryID', 'desc' => 'PopulationCategoryDescription', 'order' => 'DisplayOrder'],
         'populationdensity' => ['label' => 'Population Density', 'icon' => 'th', 'id' => 'PopulationDensityID', 'desc' => 'PopulationDensityDescription', 'order' => 'DisplayOrder'],
-	    'rural' => ['label' => 'Rural', 'icon' => 'tree', 'id' => 'RuralID', 'desc' => 'RuralDescription', 'order' => 'DisplayOrder'],
-        'trialstructure' => ['label' => 'Trial Structure', 'icon' => 'barcode', 'id' => 'TrialStructureID', 'desc' => 'TrialStructureDescription', 'order' => 'DisplayOrder']
+	    'rural' => ['label' => 'Rural', 'icon' => 'tree', 'id' => 'RuralID', 'desc' => 'RuralDescription', 'order' => 'DisplayOrder']
     ];
+
 	
 	const COURT_TABLES = ['casetype','courtlevel','cspagg','funding'];
 	

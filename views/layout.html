@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -86,50 +86,51 @@
       <!-- Main Header -->
       <header class="main-header">
 
-
-        <!-- Logo -->
-        <a href="{$appPath}/" class="logo">
+          <!-- Logo -->
           <!-- logo for regular state and mobile devices -->
-          <div class="logo-mini" style="color: #000">NCSC</div>
-          <div class="logo-tablet" style="color: #000">NCSC</div>
-          <div class="logo-lg" style="color: #000; font-size: 14px;">NCSC</div>
-        </a>
+          <!--
+          <a href="{$appPath}/" class="logo">
 
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-          <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
+              <div class="logo-mini" style="color: #000">NCSC</div>
+              <div class="logo-tablet" style="color: #000">NCSC</div>
+              <div class="logo-lg" style="color: #000; font-size: 14px;">NCSC</div>
           </a>
-          {if $env != prod}
-          <div class="alert alert-warning pull-left" style="padding: 4px; margin: 10px 0px 0px 20px;">
-            <i class="fa fa-exclamation-triangle"></i> You are accessing the {$env} server.
-          </div>
-          {/if}
-          <!-- Navbar Right Menu -->
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-<li class="dropdown tasks-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-flag-o"></i>
-                  <span class="label label-danger">3</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">Future Items To Address</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu" style="padding: 10px;">
-                        <li>Refine Filter Menu</li>
-                        <li>choropleth map</li>
-                        <li>Size All Flags The Same</li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>            
-            </ul>
-          </div>
+          -->
 
-        </nav>
+          <!-- Header Navbar -->
+          <nav class="navbar navbar-static-top" role="navigation">
+              <!-- Sidebar toggle button-->
+              <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                  <span class="sr-only">Toggle navigation</span>
+              </a>
+              {if $env != prod}
+              <div class="alert alert-warning pull-left" style="padding: 4px; margin: 10px 0px 0px 20px;">
+                  <i class="fa fa-exclamation-triangle"></i> You are accessing the {$env} server.
+              </div>
+              {/if}
+              <!-- Navbar Right Menu -->
+              <div class="navbar-custom-menu">
+                  <ul class="nav navbar-nav">
+                      <li class="dropdown tasks-menu">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                              <i class="fa fa-flag-o"></i>
+                              <span class="label label-danger">3</span>
+                          </a>
+                          <ul class="dropdown-menu">
+                              <li class="header">Future Items To Address</li>
+                              <li>
+                                  <!-- inner menu: contains the actual data -->
+                                  <ul class="menu" style="padding: 10px;">
+                                      <li>Refine Filter Menu</li>
+                                      <li>choropleth map</li>
+                                      <li>Size All Flags The Same</li>
+                                  </ul>
+                              </li>
+                          </ul>
+                      </li>
+                  </ul>
+              </div>
+          </nav>
       </header>
       <!-- Left side column. contains the logo and sidebar -->
       <aside class="main-sidebar">
@@ -141,6 +142,7 @@
           <ul class="sidebar-menu">
             <li><a href="{$appPath}/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
             {foreach $stateFilters as $label => $data}
+              {if $label != 'casetype' && $label != 'cspagg'}
               <li class="treeview treeviewStateFilters">
                 <a href="#"><i class="fa fa-{viewHelper->getIcon param1=$label}"></i>
                    <span>{viewHelper->getFilterName param1=$label}</span>
@@ -155,9 +157,10 @@
                   {/foreach}
                 </ul>
               </li>
+            {/if}
             {/foreach}            
             {foreach $stateFilters as $label => $data}
-              {if $label == 'appellatecriminalstructure' || $label == 'caseloadsize' || $label == 'deathpenalty' || $label == 'populationcategory' || $label == 'populationdensity' || $label == 'rural'}
+              {if $label == 'caseloadsize' || $label == 'deathpenalty' || $label == 'populationcategory' || $label == 'populationdensity' || $label == 'rural'}
               <li class="treeview treeviewStateCategory hidden">
                 <a href="#"><i class="fa fa-{viewHelper->getIcon param1=$label}"></i>
                    <span>{viewHelper->getFilterName param1=$label}</span>

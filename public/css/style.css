@@ -3,81 +3,110 @@
  *-------------------------------------*/
 .skin-blue .main-header .logo,
 .skin-blue .main-header .logo:hover {
-    background-color: #fff;
+  background-color: #fff;
 }
-
 .main-header .logo .logo-tablet {
-    display: none;
+  display: none;
 }
 
 .main-header .logo .logo-mini {
-    max-width: inherit;
 }
-
 .sidebar-mini.sidebar-collapse .main-header .logo > .logo-mini {
-    font-size: 14px;
+	font-size: 14px;
 }
 
-.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > span:not(.pull-right),
-.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > .treeview-menu {
-    width: 230px;
+.sidebar-mini.sidebar-collapse .sidebar-menu>li:hover>a>span:not(.pull-right), 
+.sidebar-mini.sidebar-collapse .sidebar-menu>li:hover>.treeview-menu {
+	width: 230px;
+}
+
+/***********************************************
+    * ICONS
+*/
+.fa-graduation-cap:before, .fa-gavel:before, .fa-bolt:before, .fa-usd:before, .fa-barcode:before, .fa-arrows:before {
+    color: #E53D00;
+}
+
+.fa-users:before, .fa-balance-scale:before, .fa-street-view:before, .fa-th:before, .fa-tree:before {
+    color: #F4D35E;
 }
 
 /**********************************************
 * NCSC
 ***********************************************/
 #stateFilterForm ul.treeview-menu li {
-    color: #fff;
+	color: #fff;
 }
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
-    background-color: rgba(0, 0, 0, 0.7);
+	background-color: rgba(0, 0, 0, 0.7);
 }
-
 g .node {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .color-key {
     display: inline-block;
     padding: 3px;
-    font-size: .4em;
+    font-size: 1.2em;
     padding-left: 8px;
     padding-right: 8px;
     border: solid 1px white;
+    color: #ffffff;
 }
 
 #infoModalBody .color-key {
-    font-size: 1.0em;
-    margin-right: 10px;
+	font-size: 1.0em;
+	margin-right: 10px;
+}
+
+.lj {
+    background-color: #004d73;
+    color: #ffffff;
+}
+
+.gj {
+    background-color: #76b0bd;
+    color: #ffffff;
+}
+
+.iac {
+    background-color: #487035;
+    color: #ffffff;
+}
+
+.colr {
+    background-color: #b19325;
+    color: #ffffff;
+}
+
+.courtCol g.label div {
+    color: #fff;
 }
 
 #world-map-overlay {
-    background-color: rgba(0,0,0,0.4);
-    background-image: url('../images/spinner.gif');
-    background-repeat: no-repeat;
-    background-position: center center;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+	background-color: rgba(0,0,0,0.4);
+	background-image: url('../images/spinner.gif');
+	background-repeat: no-repeat;
+	background-position: center center;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top:0;
+	left:0;
 }
 
 @media screen and (max-width: 767px) {
-    .main-header .logo .logo-tablet {
-        display: block;
-        max-height: 50px;
-        margin: auto;
-    }
+	.main-header .logo .logo-tablet {
+	  display: block;
+	  max-height: 50px;
+	  margin: auto;
+	}
 }
-
 @media (min-width: 768px) {
 }
-
 @media (min-width: 992px) {
 }
-
 @media (min-width: 1200px) {
 }
 
@@ -85,8 +114,12 @@ g .node {
  * Utils
  *-------------------------------------*/
 #dev-info {
-    margin-top: 15px;
-    border-radius: 5px;
-    padding: 6px;
-    background-color: #FFFEDD;
+	margin-top: 15px;
+	border-radius: 5px;
+	padding: 6px;
+	background-color: #FFFEDD;
 }
+
+
+
+
