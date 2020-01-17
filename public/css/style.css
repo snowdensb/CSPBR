@@ -41,7 +41,7 @@
 .skin-blue .sidebar-menu > li > .treeview-menu {
 	background-color: rgba(0, 0, 0, 0.7);
 }
-g .node {
+g .node, .helpInfo {
 	cursor: pointer;
 }
 
@@ -80,6 +80,7 @@ g .node {
     color: #ffffff;
 }
 
+#infoModalBody g.label div,
 .courtCol g.label div {
     color: #fff;
 }
@@ -94,6 +95,15 @@ g .node {
 	height: 100%;
 	top:0;
 	left:0;
+}
+
+.casetypePadding1 .casetypeLabel {
+    padding-left: 20px;
+}
+
+.bg-map-gradient {
+  background: rgb(221,221,221);
+  background: linear-gradient(180deg, rgba(185,185,185,1) 0%, rgba(172,172,172,1) 100%);
 }
 
 @media screen and (max-width: 767px) {

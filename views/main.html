@@ -52,7 +52,7 @@
 
             </div>
             <div class="col-sm-9 col-md-7">
-                <div class="box box-solid bg-light-blue-gradient">
+                <div id="map-box-bg" class="box box-solid bg-light-blue-gradient">
                 <div class="box-header">
                   <i class="fa fa-map-marker"></i>
                   <h3 class="box-title">
@@ -72,10 +72,10 @@
                 <h3 class="box-title">Selected States</h3>
 
                 <div style="display: inline; margin-left: 30px;">
-                    <div class='color-key lj' alt='Limited Jurisdiction' title='Limited Jurisdiction'>LJ</div>
-                    <div class='color-key gj' alt='General Jurisdiction' title='General Jurisdiction'>GJ</div>
-                    <div class='color-key iac' alt='Intermediate Appellate Court' title='Intermediate Appellate Court'>IAC</div>
-                    <div class='color-key colr' alt='Court of Last Resort' title='Court of Last Resort'>COLR</div>
+                    <div class='color-key lj helpInfo' id='courtTypeLJ' alt='Limited Jurisdiction' title='Limited Jurisdiction'>LJ</div>
+                    <div class='color-key gj helpInfo' id='courtTypeGJ' alt='General Jurisdiction' title='General Jurisdiction'>GJ</div>
+                    <div class='color-key iac helpInfo' id='courtTypeIAC' alt='Intermediate Appellate Court' title='Intermediate Appellate Court'>IAC</div>
+                    <div class='color-key colr helpInfo' id='courtTypeCOLR' alt='Court of Last Resort' title='Court of Last Resort'>COLR</div>
                 </div>
 
                 <div class="box-tools pull-right">
@@ -113,13 +113,12 @@
                                         <button class="btn btn-default btn-sm chartZoomBtn" data-id="{$index}" style="position: absolute; top: -20px;"><li class="fa fa-search"></li></button>
                                         <div class="courtGraph text-center" style="color: #fff;">
                                         </div>
-                                        <div style="padding: 10px 0px;">
-                                            <div class="row">
-                                                <div class="stateDetail col-md-12 col-xl-6"></div>
-                                                <div class="courtDetail col-md-12 col-xl-6">
-                                                </div>
-                                            </div>
-                                            <p><span class="label label-success">Click court in chart for details!</span></p>
+                                        <div class="row">
+                                           <div class="col-sm-12">
+                                              <div class="stateDetail box box-solid box-default"></div>
+                                              <div class="courtDetail box box-solid box-default"></div>
+                                              <p><span class="label label-success">Click court in chart for details!</span></p>
+                                           </div>
                                         </div>
                                     </div>
                                 </div>
@@ -146,6 +145,28 @@
       </div>
     </div>
   </div>
+</div>
+
+<div id="info-courtTypeLJ" class="hidden">
+LJ Info
+</div>
+<div id="info-courtTypeGJ" class="hidden">
+GJ Info
+</div>
+<div id="info-courtTypeIAC" class="hidden">
+IAC Info
+</div>
+<div id="info-courtTypeCOLR" class="hidden">
+COLR Info
+</div>
+<div id="info-caseTypeAttrEXC" class="hidden">
+EXC Info
+</div>
+<div id="info-caseTypeAttrILA" class="hidden">
+ILA Info
+</div>
+<div id="info-caseTypeAttrAmounts" class="hidden">
+Amounts Info
 </div>
 
 <script>
@@ -265,16 +286,21 @@
     	$('input.stateFilter:checked').prop('checked',false);
     	$('li.treeviewStateFilters').addClass('hidden');
     	$('li.treeviewStateCategory').removeClass('hidden');
+    	$('#map-box-bg').removeClass('bg-light-blue-gradient');
+    	$('#map-box-bg').addClass('bg-map-gradient');
     	$('#selectedFilters').html('');
     	$('#tabState1Info').show();
     	useChoropleth = true;
     	console.log('Done tab 1');
     	clearMap();
     });
+
     $('#tabState2Btn').click(function() {
         $('input.stateFilterCategory:checked').prop('checked',false);
         $('li.treeviewStateCategory').addClass('hidden');
         $('li.treeviewStateFilters').removeClass('hidden');
+    	$('#map-box-bg').removeClass('bg-map-gradient');
+    	$('#map-box-bg').addClass('bg-light-blue-gradient');
         $('#selectedCategories').html('');
         $('#tabState2Info').show();
         useChoropleth = false;
@@ -307,11 +333,27 @@
         //mermaid.initialize({ theme: 'default' })
         var jvectorData = {"US-WY":10};
         renderMap(jvectorData);
+        helpInfo();
     });
     
+    function helpInfo() {
+        $('.helpInfo').click(function() {
+            var id = $(this).attr('id');
+            $('#infoModalTitle').html('Court Glossary');
+            console.log(id);
+            $('#infoModalBody').html($('#info-' + id).html());
+            $('#infoModal').modal("show");
+        });
+    }
+    
     function renderMap(series) {
+    	// colors pulled from: http://colorbrewer2.org/?type=sequential&scheme=Blues&n=7
+    	// Copy Javascript array from Export option and replace array below.
+    	var scaleColors = ['#eff3ff','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594'];
+    	scaleColors.reverse();
         $('#world-map').vectorMap({
             map: 'us_aea',
+            zoomOnScroll: false,
             backgroundColor: 'transparent',
             regionStyle: {
                 initial: {
@@ -326,7 +368,9 @@
             series: {
                 regions: [{
                   values: series,
-                  scale: ['#4862c3', '#0129bf'],
+                  //scale: ['#4862c3', '#0129bf'],
+                  //scale: ['#0129bf', '#4862c3'],
+                  scale: scaleColors,
                   normalizeFunction: 'linear'                
                 }]
             },
@@ -462,22 +506,27 @@
     	var key = "us-" + state;
     	var details = stateDetails[key].details;
     	var s = "";
-    	s += '<h1><span id="' + key.toLowerCase() + 'CourtCardName">' + details.USStateName + '</span>';
+    	s += '<div class="box-header">';
+    	s += '<h3 class="box-title"><span id="' + key.toLowerCase() + 'CourtCardName">' + details.USStateName + '</span>';
     	//s += getColorKey();
-    	s += "</h1>";
-    	s += "<div class='box'>";
+    	s += "</h3>";
+        s += '<div class="box-tools pull-right">';
+        s += '<button class="btn btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+        s += '</div>';
+        s += '</div> <!-- ./box-header -->';
+    	s += "<div class='box-body'>";
     	s += "<ul class='nav nav-pills nav-stacked'>";
     	s += infoLine("Appellate Structure", details.AppellateCriminalStructureDescription);
     	s += infoLine("Death Penalty?", details.DeathPenaltyDescription);
     	s += infoLine("Trial Criminal Process", details.TrialCriminalProcessingDescription);
     	s += infoLine("Trial Court Structure", details.TrialStructureDescription);
     	s += "</ul>";
-    	s += "</div>";
         s += progLine("Case Load Size", details.CaseLoadSizeDescription, details.CaseLoadSizePercent);
         s += "Visit <a href='http://popup.ncsc.org/CSP/CSP_Intro.aspx' target='_blank'>Court Statistics Project</a>, the only source for a national overview of comparable state court caseload data.<br /><br />";
     	s += progLine("Population", details.PopulationCategoryDescription, details.PopulationCategoryPercent);
     	s += progLine("Pop. Density", details.PopulationDensityDescription, details.PopulationDensityPercent);
     	s += progLine("Rural", details.RuralDescription, details.RuralPopulationPercent);
+    	s += "</div>";
     	return s;
     }
     
@@ -534,21 +583,29 @@
     
     function showCourtInfo(court) {
     	var level = (levelOrCSP=="level"?court.CourtLevelID:court.CSPAggID);
-    	var s = "<h1>";
-    	s += court.CourtName;
-		if (court.Link != -99 && court.Link != "-99")
-			s += "<a style='font-size:.4em; margin-left:1em;' href='" + court.Link + "' target='_blank'>visit court website</a>";
-    	s += "</h1>";
-    	s += "<div class='box' style='border-top-color: " + colors[level] + "'>";
+        var s = '';
+    	s += '<div class="box-header">';
+    	s += '<h3 class="box-title">' + court.CourtName + '</h3>';
+        s += '<div class="box-tools pull-right">';
+        s += '<button class="btn btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+        s += '</div>';
+        s += '</div> <!-- ./box-header -->';
+    	s += "<div class='box-body'>";
     	s += "<ul class='nav nav-pills nav-stacked'>";
     	//s += infoLine("Appeal from Admin Agency?", (court.AppealFromAdminAgency=="1"?"Yes":"No"));
     	//s += infoLine("Case Management", court.CaseManagementDescription);
+		if (court.Link != -99 && court.Link != "-99") {
+			//s += "<a href='" + court.Link + "' target='_blank'>visit court website</a>";
+			s += infoLine('Website', "<a href='" + court.Link + "' target='_blank'>View</a>");
+		}
     	s += infoLine("Court Level", court.CourtLevelDescription);
         s += infoLine("Funding Model", court.FundingDescription);
         s += infoLine("Additional Info", court.Notes);
 		s += "</ul>";
-		s += "</div>";
-		s += "<button href='#' class='btn btn-default btn-sm' onclick='return showCaseTypes("+court.CourtID+");' style='background-color:" + colors[level] + "; color:" + fontcolors[level] + "'><i class='fa fa-briefcase' style='padding-right:1em;'></i>show case types</button>";
+		//s += "<button href='#' class='btn btn-default btn-sm' onclick='return showCaseTypes("+court.CourtID+");' style='background-color:" + colors[level] + "; color:" + fontcolors[level] + "'><i class='fa fa-briefcase' style='padding-right:1em;'></i>show case types</button>";
+		s += "<div id='caseTypes" + court.CourtID + "'></div>";
+    	s += "</div> <!-- /.box-body -->";
+		showCaseTypes(court.CourtID);
 		return s;
     }
     
@@ -597,50 +654,138 @@
     function showCaseTypes(courtId) {
 		$.post(appConfig.appPath + "/courtDetails","courtId="+courtId, function(court) {
 	    	var state = getStateFromCourtId(courtId);
-	    	console.debug(state);
+	    	//console.debug(state);
 	        var stateImg = appConfig.appPath + '/public/images/states/' + state.state + '.png';
 	        $('#infoModalTitle').html('<img class="img-responsive pull-left" style="margin-right: 20px; max-height: 35px;" src="' + stateImg + '"/><h3>' + court["CourtName"] + '</h3>');
-	        $('#infoModalBody').html(getCourtCaseTypeInfo(court));
-	        $('#infoModal').modal("show");
+	        //$('#infoModalBody').html(getCourtCaseTypeInfo(court));
+	        $('#caseTypes' + courtId).html(getCourtCaseTypeInfo(court));
+	        //$('#infoModal').modal("show");
+	        helpInfo();
 		});
 
         return false;
     }
     
     function getCourtCaseTypeInfo(court) {
-    	console.debug(court);
-    	var s = "<div class='table-responsive'>";
+    	//console.debug('getCourtCaseType',court.CourtLevelID);
+    	//console.debug('getCourtCaseType',court);
+
+    	var s = "";
+    	s += '<h4 style="margin-bottom: 0; padding-bottom: 0;">Case Types</h4>';
+    	s += "<div class='table-responsive' style='margin-top: 0px;'>";
     	s += "<table class='table no-margin'>";
     	s += "<thead>";
-    	s += "<th>Case Type</th><th title='Appeal By Right' alt='Appeal By Right'>ABR</th>" + 
-    		  "<th title='Appeal By Permission' alt='Appeal By Permission'>ABP</th>" + 
-    		  "<th title='Original Proceeding' alt='Original Proceeding'>Org</th>" + 
-    		  "<th title='Interlocutory Appeal' alt='Interlocutory Appeal'>ILA</th>" + 
-    		  "<th title='Exclusive' alt='Exclusive'>Exc</th>" + 
-    		  "<th title='Limited' alt='Limited'>Ltd</th>" + 
-    		  "<th title='Amounts' alt='Amounts'>Amts</th>" + 
-    		  "<th>Notes</th>";
+    	s += "<tr>";
+    	s += "<th style='width: 10px;'>&nbsp;</th><th>&nbsp;</th>";
+    	if (court.CourtLevelID == 'LJ' || court.CourtLevelID == 'GJ') {
+    	    s += "<th title='Exclusive' alt='Exclusive' class='helpInfo' id='caseTypeAttrEXC'>Exc</th>";
+    	    s += "<th title='Amounts' alt='Amounts' class='helpInfo' id='caseTypeAttrAmounts'>Amts</th>";
+    		s += "<th></th>";
+    	}
+    	else if (court.CourtLevelID == 'IAC' || court.CourtLevelID == 'COLR') {
+    		s += "<th title='Exclusive' alt='Exclusive' class='helpInfo' id='caseTypeAttrEXC'>Exc</th>";
+    		s += "<th title='Interlocutory Appeal' alt='Interlocutory Appeal' class='helpInfo' id='caseTypeAttrILA'>ILA</th>";
+    		s += "<th title='Amounts' alt='Amounts' class='helpInfo' id='caseTypeAttrAmounts'>Amts</th>";
+    	}
+    	s += "</tr>";
     	s += "</thead>";
     	s += "<tbody>";
+    	var row = '';
+
+    	var casetypeRows = {'abr': {}, 'abp': {}, 'org': {}, 'gen': {}};
+    	var casetypeRowType = '';
+
+    	var category = '';
+    	var subcategory = '';
     	for (var i=0; i<court.casetypes.length; i++) {
     		var casetype = court.casetypes[i];
-    		console.debug(casetype);
-    		s += "<tr>";
-    		s += cctiCol(casetype.CaseTypeDescription, court);
-    		s += cctiCol((casetype.AppealByRight==0?"No":"Yes"), court);
-    		s += cctiCol((casetype.AppealByPermission==0?"No":"Yes"), court);
-    		s += cctiCol((casetype.OriginalProceeding==0?"No":"Yes"), court);
-    		s += cctiCol((casetype.InterlocutoryAppeal==0?"No":"Yes"), court);
-    		s += cctiCol((casetype.Exclusive==0?"No":"Yes"), court);
-    		s += cctiCol((casetype.Limited==0?"No":"Yes"), court);
-    		s += cctiCol(cctiMinMax(casetype), court);
-    		s += cctiCol(casetype.Notes, court);
-    		s += "</tr>";
+    		//console.debug(casetype);
+    		row = '';
+    		category = '';
+    		subcategory = '';
+    		row += '<div class="casetypeLabel">' + casetype.CaseTypeDescription + '</div></td>';
+    		if (court.CourtLevelID == 'LJ' || court.CourtLevelID == 'GJ') {
+    			category = casetype.TrailCategory;
+    			if (casetype.TrailSubcategory != '') {
+    			    subcategory = casetype.TrailSubcategory;
+    			}
+    		    row += cctiCol((casetype.Exclusive==0?"No":"Yes"), court);
+        		row += cctiCol(cctiMinMax(casetype), court);
+        		row += cctiCol('', court);
+    		}
+    		else if (court.CourtLevelID == 'IAC' || court.CourtLevelID == 'COLR') {
+    			category = casetype.AppealCategory;
+    			if (casetype.AppealSubcategory != '') {
+    				subcategory = casetype.AppealSubcategory;
+    			}
+    		    row += cctiCol((casetype.Exclusive==0?"No":"Yes"), court);
+    		    row += cctiCol((casetype.InterlocutoryAppeal==0?"No":"Yes"), court);
+        		row += cctiCol(cctiMinMax(casetype), court);
+    		}
+    		
+    		if (casetype.AppealByRight == '1') {
+    			casetypeRowType = 'abr';
+    		}
+    		else if (casetype.AppealByPermission == '1') {
+    			casetypeRowType = 'abp';
+    		}
+    		else if (casetype.OriginalProceeding == '1') {
+    			casetypeRowType = 'org';
+    		}
+    		else {
+    			casetypeRowType = 'gen';
+    		}
+    		
+            if (!(category in casetypeRows[casetypeRowType])) {
+                casetypeRows[casetypeRowType][category] = {'default': []};
+            }
+            if (subcategory != '') {
+                if (!(subcategory in casetypeRows[casetypeRowType][category])) {
+                    casetypeRows[casetypeRowType][category][subcategory] = {'default': []};
+                }
+                casetypeRows[casetypeRowType][category][subcategory]['default'].push(row);
+            }
+            else {
+                casetypeRows[casetypeRowType][category]['default'].push(row);
+            }
+    		
+    	} // for
+
+    	var groupLabels = {'abr': 'Appeal By Right', 'abp': 'Appeal By Permission', 'org': 'Original Proceeding', 'gen': ''};
+    	var groups = ['abr','abp','org','gen'];
+    	for (i = 0; i < groups.length; i++) {
+    	    if (Object.keys(casetypeRows[groups[i]]).length) {
+    	    	if (groupLabels[groups[i]] != '') {
+    	    	    s += '<tr><td colspan="2"><i>' + groupLabels[groups[i]] + '</i></td><td colspan="3"></td></tr>';
+    	    	}
+    	    	s += renderCasetypes(casetypeRows[groups[i]],'');
+    	    }
     	}
+
     	s += "</tbody>";
     	s += "</table>";
     	s += "</div>";
+    	
+    	//console.log(casetypeRows);
+
     	return s;
+    }
+    
+    function renderCasetypes(casetypeRows,indent) {
+    	var categories = Object.keys(casetypeRows);
+    	var s = '';
+    	for (var i = 0; i < categories.length; i++) {
+    		if (categories[i] == 'default') {
+    			for (var j = 0; j < casetypeRows['default'].length; j++) {
+    				s += '<tr><td></td><td class="casetypePadding' + indent + '">' + casetypeRows['default'][j];
+    			}
+    		}
+    		else {
+    			s += '<tr><td></td><td>' + categories[i] + '</td><td colspan="3"></td></tr>';
+    			s += renderCasetypes(casetypeRows[categories[i]],indent + 1);
+    		}
+    	}
+        return s;
     }
     
     function cctiCol(value, court) {

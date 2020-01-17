@@ -81,7 +81,7 @@ class States extends NCSCBase {
         
         // clean filter
         foreach ($filter as $table => $idValues) {
-            if (empty(trim(implode('',$idValues)))) {
+            if (trim(implode('',$idValues)) == '') {
                 unset($filter[$table]);
             }
         }
@@ -96,7 +96,7 @@ class States extends NCSCBase {
                         $where .=  'b.'.$tables[$table]['id'] . ' = ? OR  ';
                     }
                     else {
-                        $where .=  'a.'.$tables[$table]['id'] . ' = ? AND ';
+                        $where .=  'a.'.$tables[$table]['id'] . ' = ? OR  ';
                     }
                     $params[] = $value;
                 }
@@ -126,7 +126,7 @@ class States extends NCSCBase {
                         $where .=  'c.'.$tables[$table]['id'] . ' = ? OR  ';
                     }
                     else {
-                        $where .=  'a.'.$tables[$table]['id'] . ' = ? AND ';
+                        $where .=  'a.'.$tables[$table]['id'] . ' = ? OR  ';
                     }
                     $params[] = $value;
                 }

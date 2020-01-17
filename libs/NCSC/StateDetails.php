@@ -56,7 +56,24 @@ class StateDetails extends NCSCBase {
 			$courts = $this->db->exec($appealsSql, [$state, $state], 2);
 			
 			$courtInfo = ["state"=>$state];
-			if (!empty($courts)) {
+			if ($state == 'nvx') {
+			    $courtInfo['mermaid'] = "graph BT
+209(Municipal) --> 207(District)
+208(Justice) --> 207(District)
+207(District) --> 58(Court of Appeals)
+58(Court of Appeals) --> 57(Supreme Court)
+207(District) --> 57(Supreme Court)";
+//57(Supreme Court) --> 58(Court of Appeals)";
+                    //linkStyle 2 stroke-width:0px;
+                    //linkStyle 4 stroke-width:0px;";
+			    /*
+			    209(Municipal) --> 207(District)
+			    208(Justice) --> 207(District)
+			    57(Supreme Court) --> 58(Court of Appeals)
+			    207(District) --> 57(Supreme Court)
+			    */
+			}
+			else if (!empty($courts)) {
 			    $mermaid = '';
 				foreach ($courts as $court) {
 					$mermaid = $this->getMermaidLine($court) . $mermaid;
@@ -82,12 +99,7 @@ class StateDetails extends NCSCBase {
 		if ($court["ParentCourtID"] != null) {
 		    $ret .= $court['ChildCourtID'] . "(" . $court['CourtName'] . ")";
 		    $ret .= " --> ";
-		    if ($court["ParentCourtLevelID"] == "COLR") {
-				$ret .= $court['ParentCourtID'] . "(" . $court['ParentCourtName'] . ")";
-		    }
-		    else {
-		    	$ret .= $court['ParentCourtID'] . "(" . $court['ParentCourtName'] . ")";
-		    }
+			$ret .= $court['ParentCourtID'] . "(" . $court['ParentCourtName'] . ")";
 			$ret .= $this->mnl();
 		}
 		return $ret;

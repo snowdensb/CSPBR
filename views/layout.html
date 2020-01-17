@@ -5,7 +5,24 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>##APP_NAME##</title>
-    <link rel="icon" href="{$appPath}/public/images/favicon.ico"/>
+    <link rel="icon" href="{$appPath}/public/images/icons/favicon.ico"/>
+    <link rel="apple-touch-icon" sizes="57x57" href="{$appPath}/public/images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="{$appPath}/public/images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{$appPath}/public/images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="{$appPath}/public/images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{$appPath}/public/images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="{$appPath}/public/images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="{$appPath}/public/images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="{$appPath}/public/images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{$appPath}/public/images/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{$appPath}/public/images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{$appPath}/public/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="{$appPath}/public/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{$appPath}/public/images/icons/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{$appPath}/public/images/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -88,14 +105,17 @@
 
           <!-- Logo -->
           <!-- logo for regular state and mobile devices -->
-          <!--
           <a href="{$appPath}/" class="logo">
-
-              <div class="logo-mini" style="color: #000">NCSC</div>
-              <div class="logo-tablet" style="color: #000">NCSC</div>
-              <div class="logo-lg" style="color: #000; font-size: 14px;">NCSC</div>
+              <div class="logo-mini">
+                <img src="{$appPath}/public/images/icons/favicon-96x96.png" style="max-height:50px"/>
+              </div>
+              <div class="logo-tablet">
+                <img src="{$appPath}/public/images/icons/favicon-96x96.png" style="max-height:50px"/>
+              </div>
+              <div class="logo-lg">
+                <img src="{$appPath}/public/images/icons/favicon-96x96.png" style="max-height:50px"/>
+              </div>
           </a>
-          -->
 
           <!-- Header Navbar -->
           <nav class="navbar navbar-static-top" role="navigation">
@@ -108,6 +128,7 @@
                   <i class="fa fa-exclamation-triangle"></i> You are accessing the {$env} server.
               </div>
               {/if}
+              {*
               <!-- Navbar Right Menu -->
               <div class="navbar-custom-menu">
                   <ul class="nav navbar-nav">
@@ -130,6 +151,7 @@
                       </li>
                   </ul>
               </div>
+              *}
           </nav>
       </header>
       <!-- Left side column. contains the logo and sidebar -->
@@ -152,7 +174,7 @@
                     {if $label == 'casetype'}
                     <li><input type="checkbox" id="f{$data@index}-{$desc@index}" name="stateFilter[{$label}][]" value="{$id}" class="stateFilter" style="padding: 2px 3px;"> {$desc}</li>
                     {else}
-                    <li><input type="radio" id="f{$data@index}-{$desc@index}" name="stateFilter[{$label}][]" value="{$id}" class="stateFilter" style="padding: 2px 3px;"> {$desc}</li>
+                    <li><input type="checkbox" id="f{$data@index}-{$desc@index}" name="stateFilter[{$label}][]" value="{$id}" class="stateFilter" style="padding: 2px 3px;"> {$desc}</li>
                     {/if}
                   {/foreach}
                 </ul>

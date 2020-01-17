@@ -12,7 +12,7 @@ require_once($globalBaseDir . '/libs/Wyolution/SmartyMLHelpers.php');
 $f3 = require('vendor/bcosca/fatfree-core/base.php');
 
 $f3->set('DEBUG',0);
-$f3->set('_version','2.0.0');
+$f3->set('_version','2.0.1');
 
 $f3->set('_applicationName','NCSC');
 // If app name isn't a suitable filename, change the following line
