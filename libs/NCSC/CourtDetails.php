@@ -25,7 +25,7 @@ class CourtDetails extends NCSCBase {
 			$csql = "select * from courtcasetype
 					 inner join casetype using (CaseTypeID)
 					 where CourtID = ?
-					 order by casetype.DisplayOrder";
+					 order by TrailCategory,TrailSubcategory,AppealCategory,AppealSubcategory";
 			$caseTypes = $this->db->exec($csql, [$court["CourtID"]], 1);
 			$court["casetypes"] = $caseTypes;
 			

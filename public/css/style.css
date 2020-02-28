@@ -97,8 +97,27 @@ g .node, .helpInfo {
 	left:0;
 }
 
+.casetypePadding0 .casetypeLabel {
+    padding-left: 0px;
+}
 .casetypePadding1 .casetypeLabel {
-    padding-left: 20px;
+    padding-left: 15px;
+}
+.casetypePadding2 .casetypeLabel {
+    padding-left: 30px;
+}
+.casetypePadding3 .casetypeLabel {
+    padding-left: 45px;
+}
+.casetypeGroup {
+	font-weight: 700;
+}
+.casetypePadding1.casetypeGroup {
+    font-style: italic;
+}
+.casetypePadding2.casetypeGroup {
+	font-weight: normal;
+    font-style: italic;
 }
 
 .bg-map-gradient {

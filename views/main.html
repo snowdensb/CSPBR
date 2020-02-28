@@ -168,6 +168,9 @@ ILA Info
 <div id="info-caseTypeAttrAmounts" class="hidden">
 Amounts Info
 </div>
+<div id="info-caseTypeAttrNotes" class="hidden">
+Notes Info
+</div>
 
 <script>
 {literal}
@@ -180,6 +183,10 @@ Amounts Info
     var levelOrCSP = "level";
     var colors = { "COLR": "#b19325", "IAC": "#487035", "GJ": "#76b0bd", "LJ": "#004d73" };
     var fontcolors = { "COLR": "#ffffff", "IAC": "#ffffff", "GJ": "#ffffff", "LJ": "#ffffff" };
+    var choroplethColors = ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594'];
+    var choroplethColors2 = ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594']; 
+    choroplethColors2.reverse();
+    var choroplethColors3 = ['#000000','#0000ff','#dadada'];
     var useChoropleth = false;
     var choroplethDataCategory = '';
     var caseTypeCourt;
@@ -215,7 +222,7 @@ Amounts Info
             }
             clearMap();
             m = mapObject.series.regions[0];
-            mapObject.series.regions[0].params.min = 1;
+            mapObject.series.regions[0].params.min = 0;
             mapObject.series.regions[0].params.max = 10;
             mapObject.series.regions[0].setValues(states);
         },'json');
@@ -246,17 +253,28 @@ Amounts Info
         var states = {};
         for (i = 0; i < choroplethData.data.length; i++) {
         	stateItem = choroplethData.data[i];
-        	states['US-' + stateItem.abv] = stateItem[category + 'ID'];
+        	states['US-' + stateItem.abv] = stateItem[category + 'ID'] == '-99'?2:stateItem[category + 'ID'];
         }
 
         console.log(states);
-        console.log(choroplethData.info[category]);
+        console.log('choroplethData.info.category: ' + choroplethData.info[category]);
         
         clearMap();
         m = mapObject.series.regions[0];
-        mapObject.series.regions[0].params.min = 1;
+        mapObject.series.regions[0].params.min = 0;
         mapObject.series.regions[0].params.max = choroplethData.info[category];
         mapObject.series.regions[0].setValues(states);
+        if ( choroplethData.info[category] == 3) {
+            mapObject.series.regions[0].setScale(choroplethColors3);
+        }
+        else {
+            if ( choroplethData.info[category] == 5) {
+                mapObject.series.regions[0].setScale(choroplethColors2);
+            }
+            else {
+                mapObject.series.regions[0].setScale(choroplethColors);
+            }
+        }
         
         choroplethDataCategory = category;
         
@@ -349,8 +367,7 @@ Amounts Info
     function renderMap(series) {
     	// colors pulled from: http://colorbrewer2.org/?type=sequential&scheme=Blues&n=7
     	// Copy Javascript array from Export option and replace array below.
-    	var scaleColors = ['#eff3ff','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594'];
-    	scaleColors.reverse();
+    	console.log('choroplethDataCategory: ' + choroplethDataCategory);
         $('#world-map').vectorMap({
             map: 'us_aea',
             zoomOnScroll: false,
@@ -370,7 +387,7 @@ Amounts Info
                   values: series,
                   //scale: ['#4862c3', '#0129bf'],
                   //scale: ['#0129bf', '#4862c3'],
-                  scale: scaleColors,
+                  scale: choroplethColors,
                   normalizeFunction: 'linear'                
                 }]
             },
@@ -497,7 +514,7 @@ Amounts Info
     
     function updateCaseTypeCourt() {
     	caseTypeId = $('#caseTypeCourt').val();
-    	console.log('caseTypeID: ' + caseTypeId);
+    	//console.log('caseTypeID: ' + caseTypeId);
     	updateColumnDetail();
     }
     
@@ -636,8 +653,8 @@ Amounts Info
     }
     
     function getStateFromCourtId(courtId) {
-    	console.log(courtId);
-    	console.log(stateDetails);
+    	//console.log(courtId);
+    	//console.log(stateDetails);
     	
     	for(var i=0; i<selectedStates.length; i++) {
             var state = stateDetails[selectedStates[i].toLowerCase()];
@@ -668,7 +685,7 @@ Amounts Info
     
     function getCourtCaseTypeInfo(court) {
     	//console.debug('getCourtCaseType',court.CourtLevelID);
-    	//console.debug('getCourtCaseType',court);
+    	//console.debug('getCourtCaseType',court.casetypes);
 
     	var s = "";
     	s += '<h4 style="margin-bottom: 0; padding-bottom: 0;">Case Types</h4>';
@@ -676,16 +693,18 @@ Amounts Info
     	s += "<table class='table no-margin'>";
     	s += "<thead>";
     	s += "<tr>";
-    	s += "<th style='width: 10px;'>&nbsp;</th><th>&nbsp;</th>";
+    	s += "<th>&nbsp;</th>";
     	if (court.CourtLevelID == 'LJ' || court.CourtLevelID == 'GJ') {
     	    s += "<th title='Exclusive' alt='Exclusive' class='helpInfo' id='caseTypeAttrEXC'>Exc</th>";
     	    s += "<th title='Amounts' alt='Amounts' class='helpInfo' id='caseTypeAttrAmounts'>Amts</th>";
+    		s += "<th title='Notes' alt='Notes' class='helpInfo' id='caseTypeAttrNotes'>Notes</th>";
     		s += "<th></th>";
     	}
     	else if (court.CourtLevelID == 'IAC' || court.CourtLevelID == 'COLR') {
     		s += "<th title='Exclusive' alt='Exclusive' class='helpInfo' id='caseTypeAttrEXC'>Exc</th>";
     		s += "<th title='Interlocutory Appeal' alt='Interlocutory Appeal' class='helpInfo' id='caseTypeAttrILA'>ILA</th>";
     		s += "<th title='Amounts' alt='Amounts' class='helpInfo' id='caseTypeAttrAmounts'>Amts</th>";
+    		s += "<th title='Notes' alt='Notes' class='helpInfo' id='caseTypeAttrNotes'>Notes</th>";
     	}
     	s += "</tr>";
     	s += "</thead>";
@@ -711,6 +730,7 @@ Amounts Info
     			}
     		    row += cctiCol((casetype.Exclusive==0?"No":"Yes"), court);
         		row += cctiCol(cctiMinMax(casetype), court);
+        		row += cctiCol(casetype.Notes, court);
         		row += cctiCol('', court);
     		}
     		else if (court.CourtLevelID == 'IAC' || court.CourtLevelID == 'COLR') {
@@ -721,6 +741,7 @@ Amounts Info
     		    row += cctiCol((casetype.Exclusive==0?"No":"Yes"), court);
     		    row += cctiCol((casetype.InterlocutoryAppeal==0?"No":"Yes"), court);
         		row += cctiCol(cctiMinMax(casetype), court);
+        		row += cctiCol(casetype.Notes, court);
     		}
     		
     		if (casetype.AppealByRight == '1') {
@@ -750,15 +771,23 @@ Amounts Info
             }
     		
     	} // for
+    	
+    	//console.log('casetypeRows');
+    	//console.log(casetypeRows);
 
     	var groupLabels = {'abr': 'Appeal By Right', 'abp': 'Appeal By Permission', 'org': 'Original Proceeding', 'gen': ''};
     	var groups = ['abr','abp','org','gen'];
     	for (i = 0; i < groups.length; i++) {
     	    if (Object.keys(casetypeRows[groups[i]]).length) {
     	    	if (groupLabels[groups[i]] != '') {
-    	    	    s += '<tr><td colspan="2"><i>' + groupLabels[groups[i]] + '</i></td><td colspan="3"></td></tr>';
+    	    	    s += '<tr><td class="casetypePadding0 casetypeGroup" colspan="4">' + groupLabels[groups[i]] + '</td></tr>';
     	    	}
-    	    	s += renderCasetypes(casetypeRows[groups[i]],'');
+    	    	if (groups[i] == 'gen') {
+    	    	    s += renderCasetypes(casetypeRows[groups[i]],0);
+    	    	}
+    	    	else {
+    	    	    s += renderCasetypes(casetypeRows[groups[i]],1);
+    	    	}
     	    }
     	}
 
@@ -772,16 +801,17 @@ Amounts Info
     }
     
     function renderCasetypes(casetypeRows,indent) {
+    	//console.log(casetypeRows);
     	var categories = Object.keys(casetypeRows);
     	var s = '';
+    	if ('default' in casetypeRows) {
+    	    for (var j = 0; j < casetypeRows['default'].length; j++) {
+    	        s += '<tr><td class="casetypePadding' + indent + '">' + casetypeRows['default'][j];
+    	    }
+    	}
     	for (var i = 0; i < categories.length; i++) {
-    		if (categories[i] == 'default') {
-    			for (var j = 0; j < casetypeRows['default'].length; j++) {
-    				s += '<tr><td></td><td class="casetypePadding' + indent + '">' + casetypeRows['default'][j];
-    			}
-    		}
-    		else {
-    			s += '<tr><td></td><td>' + categories[i] + '</td><td colspan="3"></td></tr>';
+    		if (categories[i] != 'default') {
+    			s += '<tr><td class="casetypePadding' + indent + ' casetypeGroup" colspan="4"><div class="casetypeLabel">' + categories[i] + '</div></td></tr>';
     			s += renderCasetypes(casetypeRows[categories[i]],indent + 1);
     		}
     	}
